@@ -18,8 +18,8 @@ namespace Application.Features.ProgrammingLanguages.Commands.DeleteProgrammingLa
 
         public class DeleteProgrammingLanguageCommandHandler : IRequestHandler<DeleteProgrammingLanguageCommand, DeleteProgrammingLanguageResultDto>
         {
-            IProgrammingLanguageRepository _programmingLanguageRepository;
-            IMapper _mapper;
+            private readonly IProgrammingLanguageRepository _programmingLanguageRepository;
+            private readonly IMapper _mapper;
 
             public DeleteProgrammingLanguageCommandHandler(IProgrammingLanguageRepository programmingLanguageRepository, IMapper mapper)
             {

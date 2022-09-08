@@ -1,6 +1,6 @@
 ﻿namespace Core.Persistence.Dynamic;
 
-public class Dynamic
+public class Dynamic:IDynamic
 {
     public IEnumerable<Sort>? Sort { get; set; }
     public Filter? Filter { get; set; }

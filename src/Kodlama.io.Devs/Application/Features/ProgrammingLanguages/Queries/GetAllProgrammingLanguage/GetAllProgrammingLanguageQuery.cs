@@ -19,8 +19,8 @@ namespace Application.Features.ProgrammingLanguages.Queries.GetAllProgrammingLan
     {
         public class GetAllProgrammingLanguageQueryHandler : IRequestHandler<GetAllProgrammingLanguageQuery, GetAllProgrammingLanguageResultModel>
         {
-            IProgrammingLanguageRepository _programmingLanguageRepository;
-            IMapper _mapper;
+            private readonly IProgrammingLanguageRepository _programmingLanguageRepository;
+            private readonly IMapper _mapper;
 
             public GetAllProgrammingLanguageQueryHandler(IProgrammingLanguageRepository programmingLanguageRepository, IMapper mapper)
             {

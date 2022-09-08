@@ -18,8 +18,8 @@ namespace Application.Features.ProgrammingLanguages.Queries.GetByIdProgrammingLa
 
         public class GetByIdProgrammingLanguageQueryHandler : IRequestHandler<GetByIdProgrammingLanguageQuery, GetByIdProgrammingLanguageResultDto>
         {
-            IProgrammingLanguageRepository _programmingLanguageRepository;
-            IMapper _mapper;
+            private readonly IProgrammingLanguageRepository _programmingLanguageRepository;
+            private readonly IMapper _mapper;
 
             public GetByIdProgrammingLanguageQueryHandler(IProgrammingLanguageRepository programmingLanguageRepository, IMapper mapper)
             {

@@ -20,9 +20,9 @@ namespace Application.Features.ProgrammingLanguages.Commands.UpdateProgrammingLa
 
         public class UpdateProgrammingLanguageCommandHandler : IRequestHandler<UpdateProgrammingLanguageCommand, UpdateProgrammingLanguageResultDto>
         {
-            IProgrammingLanguageRepository _programmingLanguageRepository;
-            IMapper _mapper;
-            ProgrammingLanguageBusinessRules _programmingLanguageBusinessRules;
+            private readonly IProgrammingLanguageRepository _programmingLanguageRepository;
+            private readonly IMapper _mapper;
+            private readonly ProgrammingLanguageBusinessRules _programmingLanguageBusinessRules;
 
             public UpdateProgrammingLanguageCommandHandler(IProgrammingLanguageRepository programmingLanguageRepository, IMapper mapper, ProgrammingLanguageBusinessRules programmingLanguageBusinessRules)
             {

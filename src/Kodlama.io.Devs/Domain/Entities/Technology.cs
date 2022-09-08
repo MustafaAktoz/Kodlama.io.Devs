@@ -7,20 +7,22 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class ProgrammingLanguage:Entity
+    public class Technology : Entity
     {
+        public int ProgrammingLanguageId { get; set; }
         public string Name { get; set; }
 
-        public ICollection<Technology> Technologies { get; set; }
+        public ProgrammingLanguage? ProgrammingLanguage { get; set; }
 
-        public ProgrammingLanguage()
+        public Technology()
         {
 
         }
 
-        public ProgrammingLanguage(int id, string name):this()
+        public Technology(int id, int programmingLanguageId, string name):this()
         {
             Id = id;
+            ProgrammingLanguageId = programmingLanguageId;
             Name = name;
         }
     }

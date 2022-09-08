@@ -18,9 +18,9 @@ namespace Application.Features.ProgrammingLanguages.Commands.CreateProgrammingLa
 
         public class CreateProgrammingLanguageCommandHandler : IRequestHandler<CreateProgrammingLanguageCommand, CreateProgrammingLanguageResultDto>
         {
-            IProgrammingLanguageRepository _programmingLanguageRepository;
-            IMapper _mapper;
-            ProgrammingLanguageBusinessRules _programmingLanguageBusinessRules;
+            private readonly IProgrammingLanguageRepository _programmingLanguageRepository;
+            private readonly IMapper _mapper;
+            private readonly ProgrammingLanguageBusinessRules _programmingLanguageBusinessRules;
 
             public CreateProgrammingLanguageCommandHandler(IProgrammingLanguageRepository programmingLanguageRepository, IMapper mapper, ProgrammingLanguageBusinessRules programmingLanguageBusinessRules)
             {
