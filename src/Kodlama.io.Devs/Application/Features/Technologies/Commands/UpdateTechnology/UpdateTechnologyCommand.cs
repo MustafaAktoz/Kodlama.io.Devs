@@ -3,6 +3,7 @@ using Application.Services.Repositories;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +33,8 @@ namespace Application.Features.Technologies.Commands.UpdateTechnology
             {
                 Technology technology = _mapper.Map<Technology>(request);
                 Technology updatedTechnology = await _technologyRepository.UpdateAsync(technology);
-                UpdateTechnologyResultDto updateTechnologyResultDto = _mapper.Map<UpdateTechnologyResultDto>(updatedTechnology);
+                Technology? getTechnologyResult = await _technologyRepository.GetAsync(t=>t.Id == updatedTechnology.Id, include:i=>i.Include(t=>t.ProgrammingLanguage));
+                UpdateTechnologyResultDto updateTechnologyResultDto = _mapper.Map<UpdateTechnologyResultDto>(getTechnologyResult);
 
                 return updateTechnologyResultDto;
             }
