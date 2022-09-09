@@ -36,9 +36,10 @@ namespace Application.Features.ApplicantAuths.Commands.CreateAccessTokenApplican
 
             public async Task<CreateAccessTokenApplicantAuthResultDto> Handle(CreateAccessTokenApplicantAuthCommand request, CancellationToken cancellationToken)
             {
-                Applicant applicant = _mapper.Map<Applicant>(request);
                 GetClaimsApplicantQuery getClaimsApplicantQuery = _mapper.Map<GetClaimsApplicantQuery>(request);
                 GetClaimsApplicantResultModel getClaimsApplicantResultModel = await _mediator.Send(getClaimsApplicantQuery);
+
+                Applicant applicant = _mapper.Map<Applicant>(request);
                 List<OperationClaim> operationClaims = _mapper.Map<List<OperationClaim>>(getClaimsApplicantResultModel.GetClaimsApplicantResultDtos);
                 AccessToken accessToken = _tokenHelper.CreateToken(applicant, operationClaims);
                 CreateAccessTokenApplicantAuthResultDto createAccessTokenApplicantAuthResultDto = _mapper.Map<CreateAccessTokenApplicantAuthResultDto>(accessToken);

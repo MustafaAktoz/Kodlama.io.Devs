@@ -19,19 +19,22 @@ namespace Application.Features.Applicants.Profiles
     {
         public ApplicantMappingProfile()
         {
-            CreateMap<Applicant, CreateApplicantCommand>().ReverseMap();
-            CreateMap<Applicant, CreateApplicantResultDto>().ReverseMap();
+            CreateMap<CreateApplicantCommand, Applicant>().ReverseMap();
+            CreateMap<CreateApplicantResultDto, Applicant>().ReverseMap();
 
-            CreateMap<Applicant, GetByEmailApplicantResultDto>().ReverseMap();
+            CreateMap<AddGitHubAddressApplicantResultDto, Applicant>().ReverseMap();
 
-            CreateMap<Applicant, GetClaimsApplicantQuery>().ReverseMap();
+            CreateMap<UpdateGitHubAddressApplicantResultDto, Applicant>().ReverseMap();
 
-            CreateMap<IPaginate<OperationClaim>, GetClaimsApplicantResultModel>().ForMember(right=>right.GetClaimsApplicantResultDtos, opt =>opt.MapFrom(left=>left.Items)).ReverseMap();
-            CreateMap<OperationClaim, GetClaimsApplicantResultDto>().ReverseMap();
+            CreateMap<DeleteGitHubAddressApplicantResultDto, Applicant>().ReverseMap();
 
-            CreateMap<Applicant, AddGitHubAddressApplicantResultDto>();
-            CreateMap<Applicant, UpdateGitHubAddressApplicantResultDto>();
-            CreateMap<Applicant, DeleteGitHubAddressApplicantResultDto>();
+            CreateMap<GetByEmailApplicantResultDto, Applicant>().ReverseMap();
+
+            CreateMap<GetClaimsApplicantQuery, Applicant>().ReverseMap();
+            CreateMap<GetClaimsApplicantResultModel, IPaginate<OperationClaim>>().ForMember(right=>right.Items, opt =>opt.MapFrom(left=>left.GetClaimsApplicantResultDtos)).ReverseMap();
+            CreateMap<GetClaimsApplicantResultDto, OperationClaim>().ReverseMap();
+
+            
         }
     }
 }

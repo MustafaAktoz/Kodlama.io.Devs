@@ -18,19 +18,19 @@ namespace Application.Features.ProgrammingLanguages.Profiles
     {
         public ProgrammingLanguageMappingProfiles()
         {
-            CreateMap<ProgrammingLanguage, CreateProgrammingLanguageCommand>().ReverseMap();
-            CreateMap<ProgrammingLanguage, CreateProgrammingLanguageResultDto>().ReverseMap();
+            CreateMap<CreateProgrammingLanguageCommand, ProgrammingLanguage>().ReverseMap();
+            CreateMap<CreateProgrammingLanguageResultDto, ProgrammingLanguage>().ReverseMap();
 
-            CreateMap<ProgrammingLanguage, UpdateProgrammingLanguageCommand>().ReverseMap();
-            CreateMap<ProgrammingLanguage, UpdateProgrammingLanguageResultDto>().ReverseMap();
+            CreateMap<UpdateProgrammingLanguageCommand, ProgrammingLanguage>().ReverseMap();
+            CreateMap<UpdateProgrammingLanguageResultDto, ProgrammingLanguage>().ReverseMap();
 
-            CreateMap<ProgrammingLanguage, DeleteProgrammingLanguageCommand>().ReverseMap();
-            CreateMap<ProgrammingLanguage, DeleteProgrammingLanguageResultDto>().ReverseMap();
+            CreateMap<DeleteProgrammingLanguageCommand, ProgrammingLanguage>().ReverseMap();
+            CreateMap<DeleteProgrammingLanguageResultDto, ProgrammingLanguage>().ReverseMap();
 
-            CreateMap<ProgrammingLanguage, GetAllProgrammingLanguageResultDto>().ReverseMap();
-            CreateMap<IPaginate<ProgrammingLanguage>, GetAllProgrammingLanguageResultModel>().ForMember(right => right.GetAllProgrammingLanguageResultDtos, opt => opt.MapFrom(left => left.Items)).ReverseMap();
+            CreateMap<GetAllProgrammingLanguageResultDto, ProgrammingLanguage>().ReverseMap();
+            CreateMap<GetAllProgrammingLanguageResultModel, IPaginate<ProgrammingLanguage>>().ForMember(right => right.Items, opt => opt.MapFrom(left => left.GetAllProgrammingLanguageResultDtos)).ReverseMap();
 
-            CreateMap<ProgrammingLanguage, GetByIdProgrammingLanguageResultDto>().ReverseMap();
+            CreateMap<GetByIdProgrammingLanguageResultDto, ProgrammingLanguage>().ReverseMap();
         }
     }
 }

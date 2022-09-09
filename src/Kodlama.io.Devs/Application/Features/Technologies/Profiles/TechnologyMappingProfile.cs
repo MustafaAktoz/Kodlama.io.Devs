@@ -20,20 +20,19 @@ namespace Application.Features.Technologies.Profiles
     {
         public TechnologyMappingProfile()
         {
-            CreateMap<Technology, CreateTechnologyCommand>().ReverseMap();
-            CreateMap<Technology, CreateTechnologyResultDto>().ForMember(right => right.ProgrammingLanguageName, opt => opt.MapFrom(left=>left.ProgrammingLanguage.Name)).ReverseMap();
+            CreateMap<CreateTechnologyCommand, Technology>().ReverseMap();
+            CreateMap<CreateTechnologyResultDto, Technology>().ReverseMap().ForMember(left => left.ProgrammingLanguageName, opt => opt.MapFrom(right=>right.ProgrammingLanguage.Name));
 
-            CreateMap<Technology, UpdateTechnologyCommand>().ReverseMap();
-            CreateMap<Technology, UpdateTechnologyResultDto>().ForMember(right => right.ProgrammingLanguageName, opt => opt.MapFrom(left => left.ProgrammingLanguage.Name)).ReverseMap();
+            CreateMap<UpdateTechnologyCommand, Technology>().ReverseMap();
+            CreateMap<UpdateTechnologyResultDto, Technology>().ReverseMap().ForMember(left => left.ProgrammingLanguageName, opt => opt.MapFrom(right => right.ProgrammingLanguage.Name));
 
-            CreateMap<Technology, DeleteTechnologyCommand>().ReverseMap();
-            CreateMap<Technology, DeleteTechnologyResultDto>().ForMember(right => right.ProgrammingLanguageName, opt => opt.MapFrom(left => left.ProgrammingLanguage.Name)).ReverseMap();
+            CreateMap<DeleteTechnologyCommand, Technology>().ReverseMap();
+            CreateMap<DeleteTechnologyResultDto, Technology>().ReverseMap().ForMember(left => left.ProgrammingLanguageName, opt => opt.MapFrom(right => right.ProgrammingLanguage.Name));
 
-            CreateMap<IPaginate<Technology>, GetAllTechnologyResultModel>().ForMember(right=>right.GetAllTechnologyResultDtos, opt =>opt.MapFrom(left=>left.Items)).ReverseMap();
-            CreateMap<Technology, GetAllTechnologyResultDto>().ForMember(right => right.ProgrammingLanguageName, opt => opt.MapFrom(left => left.ProgrammingLanguage.Name)).ReverseMap();
+            CreateMap<GetAllTechnologyResultModel, IPaginate<Technology>>().ForMember(right=>right.Items, opt =>opt.MapFrom(left=>left.GetAllTechnologyResultDtos)).ReverseMap();
+            CreateMap<GetAllTechnologyResultDto, Technology>().ReverseMap().ForMember(left => left.ProgrammingLanguageName, opt => opt.MapFrom(right => right.ProgrammingLanguage.Name));
 
             CreateMap<GetAllByDynamicTechnologyQuery, Dynamic>().ReverseMap();
-
         }
     }
 }

@@ -22,20 +22,17 @@ namespace Application.Features.ApplicantAuths.Profiles
     {
         public ApplicantAuthMappingProfile()
         {
-            CreateMap<Applicant, CreateAccessTokenApplicantAuthCommand>().ReverseMap();
-            CreateMap<AccessToken, CreateAccessTokenApplicantAuthResultDto>().ReverseMap();
-            CreateMap<UserOperationClaim, OperationClaim>()
-                .ForMember(right => right.Id, opt => opt.MapFrom(left => left.OperationClaim.Id))
-                .ForMember(right => right.Name, opt => opt.MapFrom(left => left.OperationClaim.Name))
-                .ReverseMap();
-            CreateMap<CreateApplicantCommand, RegisterApplicantAuthCommand>().ReverseMap();
-            CreateMap<CreateApplicantResultDto, CreateAccessTokenApplicantAuthCommand>().ReverseMap();
-            CreateMap<CreateAccessTokenApplicantAuthResultDto, RegisterApplicantAuthResultDto>().ReverseMap();
-            CreateMap<GetByEmailApplicantQuery, LoginApplicantAuthCommand>().ReverseMap();
-            CreateMap<GetByEmailApplicantResultDto, CreateAccessTokenApplicantAuthCommand>().ReverseMap();
-            CreateMap<LoginApplicantAuthResultDto, CreateAccessTokenApplicantAuthCommand>().ReverseMap();
-            CreateMap<CreateAccessTokenApplicantAuthResultDto, LoginApplicantAuthResultDto>().ReverseMap();
+            CreateMap<RegisterApplicantAuthCommand, CreateApplicantCommand>().ReverseMap();
+            CreateMap<RegisterApplicantAuthResultDto, CreateAccessTokenApplicantAuthResultDto>().ReverseMap();
+
+            CreateMap<LoginApplicantAuthCommand, GetByEmailApplicantQuery>().ReverseMap();
+            CreateMap<LoginApplicantAuthResultDto, CreateAccessTokenApplicantAuthResultDto>().ReverseMap();
+
+            CreateMap<CreateAccessTokenApplicantAuthCommand, Applicant>().ReverseMap();
             CreateMap<CreateAccessTokenApplicantAuthCommand, GetClaimsApplicantQuery>().ReverseMap();
+            CreateMap<CreateAccessTokenApplicantAuthCommand, GetByEmailApplicantResultDto>().ReverseMap();
+            CreateMap<CreateAccessTokenApplicantAuthCommand, CreateApplicantResultDto>().ReverseMap();
+            CreateMap<CreateAccessTokenApplicantAuthResultDto, AccessToken>().ReverseMap();
         }
     }
 }
