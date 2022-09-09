@@ -21,6 +21,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Features\ApplicantAuths\Models\" />
+    <Folder Include="Features\ApplicantAuths\Queries\" />
+    <Folder Include="Features\Applicants\Constants\" />
+    <Folder Include="Features\Applicants\Rules\" />
     <Folder Include="Features\Technologies\Constants\" />
     <Folder Include="Features\Technologies\Rules\" />
   </ItemGroup>
