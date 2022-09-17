@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.Applicants.Dtos
+namespace Application.Features.Users.Dtos
 {
-    public class GetByEmailApplicantResultDto
+    public class GetByEmailUserResultDto
     {
         public int Id { get; set; }
         public string FirstName { get; set; }
@@ -16,7 +16,5 @@ namespace Application.Features.Applicants.Dtos
         public byte[] PasswordSalt { get; set; }
         public byte[] PasswordHash { get; set; }
         public bool Status { get; set; }
-        public string GitHubAddress { get; set; }
-        public ICollection<UserOperationClaim> UserOperationClaims { get; set; }
     }
 }

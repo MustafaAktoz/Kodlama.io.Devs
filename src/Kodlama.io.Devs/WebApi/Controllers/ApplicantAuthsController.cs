@@ -1,8 +1,5 @@
-﻿using Application.Features.ApplicantAuths.Commands.LoginApplicantAuth;
-using Application.Features.ApplicantAuths.Commands.RegisterApplicantAuth;
-using Application.Features.ApplicantAuths.Dto;
-using Application.Features.Applicants.Dtos;
-using Application.Features.Applicants.Queries.GetByEmailApplicant;
+﻿using Application.Features.ApplicantAuths.Commands.RegisterApplicantAuth;
+using Application.Features.ApplicantAuths.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
@@ -14,13 +11,6 @@ namespace WebApi.Controllers
         {
             RegisterApplicantAuthResultDto registerApplicantAuthResultDto = await Mediator.Send(registerApplicantAuthCommand);
             return Created("", registerApplicantAuthResultDto);
-        }
-
-        [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginApplicantAuthCommand loginApplicantAuthCommand)
-        {
-            LoginApplicantAuthResultDto loginApplicantAuthResultDto = await Mediator.Send(loginApplicantAuthCommand);
-            return Ok(loginApplicantAuthResultDto);
         }
     }
 }

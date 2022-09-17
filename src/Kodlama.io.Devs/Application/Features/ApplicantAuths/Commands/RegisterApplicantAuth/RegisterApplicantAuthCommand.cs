@@ -1,8 +1,8 @@
-﻿using Application.Features.ApplicantAuths.Commands.CreateAccessTokenApplicantAuth;
-using Application.Features.ApplicantAuths.Dto;
-using Application.Features.ApplicantAuths.Rules;
+﻿using Application.Features.UserAuths.Commands.CreateAccessTokenUserAuth;
+using Application.Features.ApplicantAuths.Dtos;
 using Application.Features.Applicants.Commands.CreateApplicant;
 using Application.Features.Applicants.Dtos;
+using Application.Features.UserAuths.Dtos;
 using AutoMapper;
 using Core.Security.Hashing;
 using MediatR;
@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Application.Features.UserAuths.Rules;
 
 namespace Application.Features.ApplicantAuths.Commands.RegisterApplicantAuth
 {
@@ -25,18 +26,18 @@ namespace Application.Features.ApplicantAuths.Commands.RegisterApplicantAuth
         {
             private readonly IMediator _mediator;
             private readonly IMapper _mapper;
-            private readonly ApplicantAuthBusinessRules _applicantAuthBusinessRules;
+            private readonly UserAuthBusinessRules _userAuthBusinessRules;
 
-            public RegisterApplicantAuthCommandHandler(IMediator mediator, IMapper mapper, ApplicantAuthBusinessRules applicantAuthBusinessRules)
+            public RegisterApplicantAuthCommandHandler(IMediator mediator, IMapper mapper, UserAuthBusinessRules userAuthBusinessRules)
             {
                 _mediator = mediator;
                 _mapper = mapper;
-                _applicantAuthBusinessRules = applicantAuthBusinessRules;
+                _userAuthBusinessRules = userAuthBusinessRules;
             }
 
             public async Task<RegisterApplicantAuthResultDto> Handle(RegisterApplicantAuthCommand request, CancellationToken cancellationToken)
             {
-                await _applicantAuthBusinessRules.EmailCanNotBeDuplicatedWhenRegistered(request.Email);
+                await _userAuthBusinessRules.EmailCanNotBeDuplicatedWhenRegistered(request.Email);
 
                 CreateApplicantCommand createApplicantCommand = _mapper.Map<CreateApplicantCommand>(request);
                 byte[] passwordHash, passwordSalt;
@@ -46,9 +47,9 @@ namespace Application.Features.ApplicantAuths.Commands.RegisterApplicantAuth
                 createApplicantCommand.Status = true;
                 CreateApplicantResultDto createApplicantResultDto = await _mediator.Send(createApplicantCommand);
 
-                CreateAccessTokenApplicantAuthCommand createAccessTokenApplicantAuthCommand = _mapper.Map<CreateAccessTokenApplicantAuthCommand>(createApplicantResultDto);
-                CreateAccessTokenApplicantAuthResultDto createAccessTokenApplicantAuthResultDto = await _mediator.Send(createAccessTokenApplicantAuthCommand);
-                RegisterApplicantAuthResultDto registerApplicantAuthResultDto = _mapper.Map<RegisterApplicantAuthResultDto>(createAccessTokenApplicantAuthResultDto);
+                CreateAccessTokenUserAuthCommand createAccessTokenUserAuthCommand = _mapper.Map<CreateAccessTokenUserAuthCommand>(createApplicantResultDto);
+                CreateAccessTokenUserAuthResultDto createAccessTokenUserAuthResultDto = await _mediator.Send(createAccessTokenUserAuthCommand);
+                RegisterApplicantAuthResultDto registerApplicantAuthResultDto = _mapper.Map<RegisterApplicantAuthResultDto>(createAccessTokenUserAuthResultDto);
 
                 return registerApplicantAuthResultDto;
             }

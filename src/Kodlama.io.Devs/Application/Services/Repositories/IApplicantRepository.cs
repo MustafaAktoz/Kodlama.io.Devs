@@ -7,6 +7,5 @@ namespace Application.Services.Repositories
 {
     public interface IApplicantRepository : IAsyncRepository<Applicant>
     {
-        Task<IPaginate<OperationClaim>> GetClaims(Applicant applicant, int index = 0, int size = 10, CancellationToken cancellationToken = default);
     }
 }

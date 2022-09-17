@@ -1,5 +1,5 @@
-﻿using Application.Features.ApplicantAuths.Rules;
-using Application.Features.ProgrammingLanguages.Rules;
+﻿using Application.Features.ProgrammingLanguages.Rules;
+using Application.Features.UserAuths.Rules;
 using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Validation;
 using Core.Security.JWT;
@@ -24,7 +24,7 @@ namespace Application
             services.AddMediatR(Assembly.GetExecutingAssembly());
 
             services.AddScoped<ProgrammingLanguageBusinessRules>();
-            services.AddScoped<ApplicantAuthBusinessRules>();
+            services.AddScoped<UserAuthBusinessRules>();
 
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(AuthorizationBehavior<,>));

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.Applicants.Dtos
+namespace Application.Features.Users.Dtos
 {
-    public class GetClaimsApplicantResultDto
+    public class GetClaimsUserResultDto
     {
         public int Id { get; set; }
         public string Name { get; set; }

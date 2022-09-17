@@ -21,12 +21,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Features\ApplicantAuths\Constants\" />
     <Folder Include="Features\ApplicantAuths\Models\" />
     <Folder Include="Features\ApplicantAuths\Queries\" />
+    <Folder Include="Features\ApplicantAuths\Rules\" />
     <Folder Include="Features\Applicants\Constants\" />
+    <Folder Include="Features\Applicants\Models\" />
+    <Folder Include="Features\Applicants\Queries\" />
     <Folder Include="Features\Applicants\Rules\" />
     <Folder Include="Features\Technologies\Constants\" />
     <Folder Include="Features\Technologies\Rules\" />
+    <Folder Include="Features\Users\Commands\" />
   </ItemGroup>
 
 </Project>

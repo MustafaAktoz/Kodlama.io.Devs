@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.ApplicantAuths.Dto
+namespace Application.Features.ApplicantAuths.Dtos
 {
-    public class CreateAccessTokenApplicantAuthResultDto
+    public class RegisterApplicantAuthResultDto
     {
         public string Token { get; set; }
         public DateTime Expiration { get; set; }

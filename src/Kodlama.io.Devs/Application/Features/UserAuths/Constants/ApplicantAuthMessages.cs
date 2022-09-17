@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.ApplicantAuths.Constants
+namespace Application.Features.UserAuths.Constants
 {
-    public class ApplicantAuthMessages
+    public class UserAuthMessages
     {
         public const string EmailIsAlreadyRegistered = "Email is already registered";
         public const string EmailNotFound = "Email not found";
