@@ -15,8 +15,11 @@ using System.Threading.Tasks;
 
 namespace Application.Features.ProgrammingLanguages.Queries.GetAllProgrammingLanguage
 {
-    public class GetAllProgrammingLanguageQuery :PageRequest, IRequest<GetAllProgrammingLanguageResultModel>
+    public class GetAllProgrammingLanguageQuery :IPageRequest, IRequest<GetAllProgrammingLanguageResultModel>
     {
+        public int Page { get; set; }
+        public int PageSize { get; set; }
+
         public class GetAllProgrammingLanguageQueryHandler : IRequestHandler<GetAllProgrammingLanguageQuery, GetAllProgrammingLanguageResultModel>
         {
             private readonly IProgrammingLanguageRepository _programmingLanguageRepository;
