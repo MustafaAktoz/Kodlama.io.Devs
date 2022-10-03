@@ -1,5 +1,4 @@
-﻿using Core.Persistence.Paging;
-using Core.Persistence.Repositories;
+﻿using Core.Persistence.Repositories;
 using Core.Security.Entities;
 using System;
 using System.Collections.Generic;
@@ -9,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Application.Services.Repositories
 {
-    public interface IUserRepository:IAsyncRepository<User>
+    public interface IOperationClaimRepository : IAsyncRepository<OperationClaim>, IRepository<OperationClaim>
     {
     }
 }

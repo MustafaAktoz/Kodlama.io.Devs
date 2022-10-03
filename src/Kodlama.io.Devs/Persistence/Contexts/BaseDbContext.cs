@@ -75,7 +75,6 @@ namespace Persistence.Contexts
                 a.HasOne(p => p.OperationClaim);
             });
 
-
             ProgrammingLanguage[] programmingLanguageSeeds = { new(1, "C#"), new(2, "Python") };
             modelBuilder.Entity<ProgrammingLanguage>().HasData(programmingLanguageSeeds);
 

@@ -1,6 +1,4 @@
 ﻿using Application.Features.UserAuths.Constants;
-using Application.Features.Users.Queries.GetByEmailUser;
-using Application.Features.Users.Dtos;
 using Core.CrossCuttingConcerns.Exceptions;
 using Core.Security.Hashing;
 using MediatR;
@@ -9,22 +7,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Application.Services.Repositories;
+using Core.Security.Entities;
 
 namespace Application.Features.UserAuths.Rules
 {
     public class UserAuthBusinessRules
     {
-        IMediator _mediator;
-        public UserAuthBusinessRules(IMediator mediator)
+        IUserRepository _userRepository;
+
+        public UserAuthBusinessRules(IUserRepository userRepository)
         {
-            _mediator = mediator;
+            _userRepository = userRepository;
         }
 
         public async Task MustBeAValidEmailWhenLoggedIn(string email)
         {
-            GetByEmailUserQuery getByEmailUserQuery = new() { Email = email };
-            GetByEmailUserResultDto getByEmailUserResultDto = await _mediator.Send(getByEmailUserQuery);
-            if (getByEmailUserResultDto == null) throw new BusinessException(UserAuthMessages.EmailNotFound);
+            User? user = await _userRepository.GetAsync(u => u.Email == email);
+            if (user == null) throw new BusinessException(UserAuthMessages.EmailNotFound);
         }
 
         public async Task AValidPasswordMustBeEnteredWhenLoggedIn(string password, byte[] passwordHash, byte[] passwordSalt)
@@ -35,9 +35,8 @@ namespace Application.Features.UserAuths.Rules
 
         public async Task EmailCanNotBeDuplicatedWhenRegistered(string email)
         {
-            GetByEmailUserQuery getByEmailUserQuery = new() { Email = email };
-            GetByEmailUserResultDto getByEmailUserResultDto = await _mediator.Send(getByEmailUserQuery);
-            if (getByEmailUserResultDto != null) throw new BusinessException(UserAuthMessages.EmailIsAlreadyRegistered);
+            User? user = await _userRepository.GetAsync(u => u.Email == email);
+            if (user != null) throw new BusinessException(UserAuthMessages.EmailIsAlreadyRegistered);
         }
     }
 }

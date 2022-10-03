@@ -1,8 +1,4 @@
-﻿using Application.Features.UserAuths.Commands.CreateAccessTokenUserAuth;
-using Application.Features.ApplicantAuths.Dtos;
-using Application.Features.Applicants.Commands.CreateApplicant;
-using Application.Features.Applicants.Dtos;
-using Application.Features.UserAuths.Dtos;
+﻿using Application.Features.ApplicantAuths.Dtos;
 using AutoMapper;
 using Core.Security.Hashing;
 using MediatR;
@@ -12,6 +8,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Application.Features.UserAuths.Rules;
+using Application.Services.UserAuthService;
+using Domain.Entities;
+using Core.Security.JWT;
+using Application.Services.Repositories;
 
 namespace Application.Features.ApplicantAuths.Commands.RegisterApplicantAuth
 {
@@ -24,13 +24,15 @@ namespace Application.Features.ApplicantAuths.Commands.RegisterApplicantAuth
 
         public class RegisterApplicantAuthCommandHandler : IRequestHandler<RegisterApplicantAuthCommand, RegisterApplicantAuthResultDto>
         {
-            private readonly IMediator _mediator;
+            private readonly IUserAuthService _userAuthService;
+            private readonly IApplicantRepository _applicantRepository;
             private readonly IMapper _mapper;
             private readonly UserAuthBusinessRules _userAuthBusinessRules;
 
-            public RegisterApplicantAuthCommandHandler(IMediator mediator, IMapper mapper, UserAuthBusinessRules userAuthBusinessRules)
+            public RegisterApplicantAuthCommandHandler(IUserAuthService userAuthService, IApplicantRepository applicantRepository, IMapper mapper, UserAuthBusinessRules userAuthBusinessRules)
             {
-                _mediator = mediator;
+                _userAuthService = userAuthService;
+                _applicantRepository = applicantRepository;
                 _mapper = mapper;
                 _userAuthBusinessRules = userAuthBusinessRules;
             }
@@ -39,17 +41,17 @@ namespace Application.Features.ApplicantAuths.Commands.RegisterApplicantAuth
             {
                 await _userAuthBusinessRules.EmailCanNotBeDuplicatedWhenRegistered(request.Email);
 
-                CreateApplicantCommand createApplicantCommand = _mapper.Map<CreateApplicantCommand>(request);
                 byte[] passwordHash, passwordSalt;
                 HashingHelper.CreatePasswordHash(request.Password, out passwordHash, out passwordSalt);
-                createApplicantCommand.PasswordHash = passwordHash;
-                createApplicantCommand.PasswordSalt = passwordSalt;
-                createApplicantCommand.Status = true;
-                CreateApplicantResultDto createApplicantResultDto = await _mediator.Send(createApplicantCommand);
 
-                CreateAccessTokenUserAuthCommand createAccessTokenUserAuthCommand = _mapper.Map<CreateAccessTokenUserAuthCommand>(createApplicantResultDto);
-                CreateAccessTokenUserAuthResultDto createAccessTokenUserAuthResultDto = await _mediator.Send(createAccessTokenUserAuthCommand);
-                RegisterApplicantAuthResultDto registerApplicantAuthResultDto = _mapper.Map<RegisterApplicantAuthResultDto>(createAccessTokenUserAuthResultDto);
+                Applicant applicant = _mapper.Map<Applicant>(request);
+                applicant.PasswordHash = passwordHash;
+                applicant.PasswordSalt = passwordSalt;
+                applicant.Status = true;
+
+                Applicant addedApplicant = await _applicantRepository.AddAsync(applicant);
+                AccessToken accessToken = await _userAuthService.CreateAccessToken(addedApplicant);
+                RegisterApplicantAuthResultDto registerApplicantAuthResultDto = _mapper.Map<RegisterApplicantAuthResultDto>(accessToken);
 
                 return registerApplicantAuthResultDto;
             }

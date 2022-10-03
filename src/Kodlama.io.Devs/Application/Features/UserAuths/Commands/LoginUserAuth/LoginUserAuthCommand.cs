@@ -1,7 +1,5 @@
-﻿using Application.Features.UserAuths.Commands.CreateAccessTokenUserAuth;
-using Application.Features.UserAuths.Dtos;
+﻿using Application.Features.UserAuths.Dtos;
 using Application.Features.UserAuths.Rules;
-using Application.Features.Users.Queries.GetByEmailUser;
 using AutoMapper;
 using MediatR;
 using System;
@@ -9,7 +7,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Application.Features.Users.Dtos;
+using Application.Services.Repositories;
+using Core.Security.Entities;
+using Application.Services.UserAuthService;
+using Core.Security.JWT;
 
 namespace Application.Features.UserAuths.Commands.LoginUserAuth
 {
@@ -20,13 +21,15 @@ namespace Application.Features.UserAuths.Commands.LoginUserAuth
 
         public class LoginUserAuthCommandHandler : IRequestHandler<LoginUserAuthCommand, LoginUserAuthResultDto>
         {
-            private readonly IMediator _mediator;
+            private readonly IUserRepository _userRepository;
+            private readonly IUserAuthService _userAuthService;
             private readonly IMapper _mapper;
             private readonly UserAuthBusinessRules _userAuthBusinessRules;
 
-            public LoginUserAuthCommandHandler(IMediator mediator, IMapper mapper, UserAuthBusinessRules userAuthBusinessRules)
+            public LoginUserAuthCommandHandler(IUserRepository userRepository, IUserAuthService userAuthService, IMapper mapper, UserAuthBusinessRules userAuthBusinessRules)
             {
-                _mediator = mediator;
+                _userRepository = userRepository;
+                _userAuthService = userAuthService;
                 _mapper = mapper;
                 _userAuthBusinessRules = userAuthBusinessRules;
             }
@@ -35,13 +38,11 @@ namespace Application.Features.UserAuths.Commands.LoginUserAuth
             {
                 await _userAuthBusinessRules.MustBeAValidEmailWhenLoggedIn(request.Email);
 
-                GetByEmailUserQuery getByEmailUserQuery = _mapper.Map<GetByEmailUserQuery>(request);
-                GetByEmailUserResultDto getByEmailUserResultDto = await _mediator.Send(getByEmailUserQuery);
-                await _userAuthBusinessRules.AValidPasswordMustBeEnteredWhenLoggedIn(request.Password, getByEmailUserResultDto.PasswordHash, getByEmailUserResultDto.PasswordSalt);
+                User? user = await _userRepository.GetAsync(u=>u.Email == request.Email);
+                await _userAuthBusinessRules.AValidPasswordMustBeEnteredWhenLoggedIn(request.Password, user.PasswordHash, user.PasswordSalt);
 
-                CreateAccessTokenUserAuthCommand createAccessTokenUserAuthCommand = _mapper.Map<CreateAccessTokenUserAuthCommand>(getByEmailUserResultDto);
-                CreateAccessTokenUserAuthResultDto createAccessTokenUserAuthResultDto = await _mediator.Send(createAccessTokenUserAuthCommand);
-                LoginUserAuthResultDto loginUserAuthResultDto = _mapper.Map<LoginUserAuthResultDto>(createAccessTokenUserAuthResultDto);
+                AccessToken accessToken = await _userAuthService.CreateAccessToken(user);
+                LoginUserAuthResultDto loginUserAuthResultDto = _mapper.Map<LoginUserAuthResultDto>(accessToken);
 
                 return loginUserAuthResultDto;
             }

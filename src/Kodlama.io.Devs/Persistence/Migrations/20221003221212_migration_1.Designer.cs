@@ -12,8 +12,8 @@ using Persistence.Contexts;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(BaseDbContext))]
-    [Migration("20220908234144_Added-Auth")]
-    partial class AddedAuth
+    [Migration("20221003221212_migration_1")]
+    partial class migration_1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -259,7 +259,7 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Core.Security.Entities.UserOperationClaim", b =>
                 {
                     b.HasOne("Core.Security.Entities.OperationClaim", "OperationClaim")
-                        .WithMany("UserOperationClaims")
+                        .WithMany()
                         .HasForeignKey("OperationClaimId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -293,11 +293,6 @@ namespace Persistence.Migrations
                         .HasForeignKey("Domain.Entities.Applicant", "Id")
                         .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Core.Security.Entities.OperationClaim", b =>
-                {
-                    b.Navigation("UserOperationClaims");
                 });
 
             modelBuilder.Entity("Core.Security.Entities.User", b =>

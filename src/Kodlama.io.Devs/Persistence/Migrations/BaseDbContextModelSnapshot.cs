@@ -257,7 +257,7 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Core.Security.Entities.UserOperationClaim", b =>
                 {
                     b.HasOne("Core.Security.Entities.OperationClaim", "OperationClaim")
-                        .WithMany("UserOperationClaims")
+                        .WithMany()
                         .HasForeignKey("OperationClaimId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -291,11 +291,6 @@ namespace Persistence.Migrations
                         .HasForeignKey("Domain.Entities.Applicant", "Id")
                         .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Core.Security.Entities.OperationClaim", b =>
-                {
-                    b.Navigation("UserOperationClaims");
                 });
 
             modelBuilder.Entity("Core.Security.Entities.User", b =>

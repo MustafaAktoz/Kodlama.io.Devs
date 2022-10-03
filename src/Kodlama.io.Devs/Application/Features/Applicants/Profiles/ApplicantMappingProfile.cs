@@ -1,6 +1,4 @@
-﻿using Application.Features.Applicants.Commands.CreateApplicant;
-using Application.Features.Applicants.Dtos;
-using Application.Features.Users.Dtos;
+﻿using Application.Features.Applicants.Dtos;
 using AutoMapper;
 using Domain.Entities;
 using System;
@@ -15,9 +13,6 @@ namespace Application.Features.Applicants.Profiles
     {
         public ApplicantMappingProfile()
         {
-            CreateMap<CreateApplicantCommand, Applicant>().ReverseMap();
-            CreateMap<CreateApplicantResultDto, Applicant>().ReverseMap();
-
             CreateMap<AddGitHubAddressApplicantResultDto, Applicant>().ReverseMap();
 
             CreateMap<UpdateGitHubAddressApplicantResultDto, Applicant>().ReverseMap();

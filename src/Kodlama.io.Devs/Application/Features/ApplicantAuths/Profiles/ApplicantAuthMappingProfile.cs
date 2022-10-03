@@ -1,14 +1,6 @@
-﻿using Application.Features.UserAuths.Commands.CreateAccessTokenUserAuth;
-using Application.Features.UserAuths.Commands.LoginUserAuth;
-using Application.Features.ApplicantAuths.Commands.RegisterApplicantAuth;
+﻿using Application.Features.ApplicantAuths.Commands.RegisterApplicantAuth;
 using Application.Features.ApplicantAuths.Dtos;
-using Application.Features.Applicants.Commands.CreateApplicant;
-using Application.Features.Applicants.Dtos;
-using Application.Features.Users.Queries.GetByEmailUser;
-using Application.Features.Users.Queries.GetClaimsUser;
-using Application.Features.UserAuths.Dtos;
 using AutoMapper;
-using Core.Security.Entities;
 using Core.Security.JWT;
 using Domain.Entities;
 using System;
@@ -23,10 +15,8 @@ namespace Application.Features.ApplicantAuths.Profiles
     {
         public ApplicantAuthMappingProfile()
         {
-            CreateMap<RegisterApplicantAuthCommand, CreateApplicantCommand>().ReverseMap();
-            CreateMap<RegisterApplicantAuthResultDto, CreateAccessTokenUserAuthResultDto>().ReverseMap();
-
-            CreateMap<CreateApplicantResultDto, CreateAccessTokenUserAuthCommand>().ReverseMap();
+            CreateMap<RegisterApplicantAuthCommand, Applicant>().ReverseMap();
+            CreateMap<RegisterApplicantAuthResultDto, AccessToken>().ReverseMap();
         }
     }
 }

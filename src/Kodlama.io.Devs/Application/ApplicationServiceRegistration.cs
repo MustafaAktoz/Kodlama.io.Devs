@@ -1,5 +1,6 @@
 ﻿using Application.Features.ProgrammingLanguages.Rules;
 using Application.Features.UserAuths.Rules;
+using Application.Services.UserAuthService;
 using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Validation;
 using Core.Security.JWT;
@@ -25,6 +26,7 @@ namespace Application
 
             services.AddScoped<ProgrammingLanguageBusinessRules>();
             services.AddScoped<UserAuthBusinessRules>();
+            services.AddScoped<IUserAuthService, UserAuthManager>();
 
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(AuthorizationBehavior<,>));

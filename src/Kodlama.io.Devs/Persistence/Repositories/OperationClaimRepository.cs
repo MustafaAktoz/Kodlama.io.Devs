@@ -1,8 +1,6 @@
 ﻿using Application.Services.Repositories;
-using Core.Persistence.Paging;
 using Core.Persistence.Repositories;
 using Core.Security.Entities;
-using Domain.Entities;
 using Persistence.Contexts;
 using System;
 using System.Collections.Generic;
@@ -12,8 +10,10 @@ using System.Threading.Tasks;
 
 namespace Persistence.Repositories
 {
-    public class UserRepository : EfRepositoryBase<User, BaseDbContext>, IUserRepository
+    public class OperationClaimRepository : EfRepositoryBase<OperationClaim, BaseDbContext>, IOperationClaimRepository
     {
-        public UserRepository(BaseDbContext context) : base(context) { }
+        public OperationClaimRepository(BaseDbContext context) : base(context)
+        {
+        }
     }
 }
