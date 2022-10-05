@@ -11,38 +11,39 @@ using Application.Services.Repositories;
 using Core.Security.Entities;
 using Application.Services.UserAuthService;
 using Core.Security.JWT;
+using Core.Security.Dtos;
 
 namespace Application.Features.UserAuths.Commands.LoginUserAuth
 {
     public class LoginUserAuthCommand : IRequest<LoginUserAuthResultDto>
     {
-        public string Email { get; set; }
-        public string Password { get; set; }
+        public UserForLoginDto UserForLoginDto { get; set; }
+        public string IpAddress { get; set; }
 
         public class LoginUserAuthCommandHandler : IRequestHandler<LoginUserAuthCommand, LoginUserAuthResultDto>
         {
             private readonly IUserRepository _userRepository;
             private readonly IUserAuthService _userAuthService;
-            private readonly IMapper _mapper;
             private readonly UserAuthBusinessRules _userAuthBusinessRules;
 
-            public LoginUserAuthCommandHandler(IUserRepository userRepository, IUserAuthService userAuthService, IMapper mapper, UserAuthBusinessRules userAuthBusinessRules)
+            public LoginUserAuthCommandHandler(IUserRepository userRepository, IUserAuthService userAuthService, UserAuthBusinessRules userAuthBusinessRules)
             {
                 _userRepository = userRepository;
                 _userAuthService = userAuthService;
-                _mapper = mapper;
                 _userAuthBusinessRules = userAuthBusinessRules;
             }
 
             public async Task<LoginUserAuthResultDto> Handle(LoginUserAuthCommand request, CancellationToken cancellationToken)
             {
-                await _userAuthBusinessRules.MustBeAValidEmailWhenLoggedIn(request.Email);
+                await _userAuthBusinessRules.MustBeAValidEmailWhenLoggedIn(request.UserForLoginDto.Email);
 
-                User? user = await _userRepository.GetAsync(u=>u.Email == request.Email);
-                await _userAuthBusinessRules.AValidPasswordMustBeEnteredWhenLoggedIn(request.Password, user.PasswordHash, user.PasswordSalt);
+                User? user = await _userRepository.GetAsync(u=>u.Email == request.UserForLoginDto.Email);
+                await _userAuthBusinessRules.AValidPasswordMustBeEnteredWhenLoggedIn(request.UserForLoginDto.Password, user.PasswordHash, user.PasswordSalt);
 
                 AccessToken accessToken = await _userAuthService.CreateAccessToken(user);
-                LoginUserAuthResultDto loginUserAuthResultDto = _mapper.Map<LoginUserAuthResultDto>(accessToken);
+                RefreshToken refreshToken = await _userAuthService.CreateRefreshToken(user, request.IpAddress);
+                RefreshToken addedRefreshToken = await _userAuthService.AddRefreshToken(refreshToken);
+                LoginUserAuthResultDto loginUserAuthResultDto = new() { AccessToken = accessToken, RefreshToken = refreshToken};
 
                 return loginUserAuthResultDto;
             }

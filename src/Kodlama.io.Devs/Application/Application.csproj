@@ -29,6 +29,8 @@
     <Folder Include="Features\Applicants\Models\" />
     <Folder Include="Features\Applicants\Queries\" />
     <Folder Include="Features\Applicants\Rules\" />
+    <Folder Include="Features\OperationClaims\Profiles\" />
+    <Folder Include="Features\OperationClaims\Rules\" />
     <Folder Include="Features\Technologies\Constants\" />
     <Folder Include="Features\Technologies\Rules\" />
   </ItemGroup>

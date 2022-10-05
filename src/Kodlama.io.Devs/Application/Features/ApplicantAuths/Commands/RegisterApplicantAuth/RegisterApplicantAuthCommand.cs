@@ -12,15 +12,15 @@ using Application.Services.UserAuthService;
 using Domain.Entities;
 using Core.Security.JWT;
 using Application.Services.Repositories;
+using Core.Security.Entities;
+using Core.Security.Dtos;
 
 namespace Application.Features.ApplicantAuths.Commands.RegisterApplicantAuth
 {
     public class RegisterApplicantAuthCommand : IRequest<RegisterApplicantAuthResultDto>
     {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
+        public UserForRegisterDto UserForRegisterDto { get; set; }
+        public string IpAddress { get; set; }
 
         public class RegisterApplicantAuthCommandHandler : IRequestHandler<RegisterApplicantAuthCommand, RegisterApplicantAuthResultDto>
         {
@@ -39,19 +39,21 @@ namespace Application.Features.ApplicantAuths.Commands.RegisterApplicantAuth
 
             public async Task<RegisterApplicantAuthResultDto> Handle(RegisterApplicantAuthCommand request, CancellationToken cancellationToken)
             {
-                await _userAuthBusinessRules.EmailCanNotBeDuplicatedWhenRegistered(request.Email);
+                await _userAuthBusinessRules.EmailCanNotBeDuplicatedWhenRegistered(request.UserForRegisterDto.Email);
 
                 byte[] passwordHash, passwordSalt;
-                HashingHelper.CreatePasswordHash(request.Password, out passwordHash, out passwordSalt);
+                HashingHelper.CreatePasswordHash(request.UserForRegisterDto.Password, out passwordHash, out passwordSalt);
 
-                Applicant applicant = _mapper.Map<Applicant>(request);
+                Applicant applicant = _mapper.Map<Applicant>(request.UserForRegisterDto);
                 applicant.PasswordHash = passwordHash;
                 applicant.PasswordSalt = passwordSalt;
                 applicant.Status = true;
 
                 Applicant addedApplicant = await _applicantRepository.AddAsync(applicant);
                 AccessToken accessToken = await _userAuthService.CreateAccessToken(addedApplicant);
-                RegisterApplicantAuthResultDto registerApplicantAuthResultDto = _mapper.Map<RegisterApplicantAuthResultDto>(accessToken);
+                RefreshToken refreshToken = await _userAuthService.CreateRefreshToken(addedApplicant, request.IpAddress);
+                RefreshToken addedRefreshToken = await _userAuthService.AddRefreshToken(refreshToken);
+                RegisterApplicantAuthResultDto registerApplicantAuthResultDto = new() { AccessToken = accessToken, RefreshToken = addedRefreshToken };
 
                 return registerApplicantAuthResultDto;
             }

@@ -1,8 +1,11 @@
-﻿namespace Application.Features.UserAuths.Dtos
+﻿using Core.Security.Entities;
+using Core.Security.JWT;
+
+namespace Application.Features.UserAuths.Dtos
 {
     public class LoginUserAuthResultDto
     {
-        public string Token { get; set; }
-        public DateTime Expiration { get; set; }
+        public AccessToken AccessToken { get; set; }
+        public RefreshToken RefreshToken { get; set; }
     }
 }

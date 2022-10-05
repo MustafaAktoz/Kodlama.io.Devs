@@ -14,11 +14,13 @@ namespace Application.Services.UserAuthService
     public class UserAuthManager : IUserAuthService
     {
         private readonly IUserOperationClaimRepository _userOperationClaimRepository;
+        private readonly IRefreshTokenRepository _refreshTokenRepository;
         private readonly ITokenHelper _tokenHelper;
 
-        public UserAuthManager(IUserOperationClaimRepository userOperationClaimRepository, ITokenHelper tokenHelper)
+        public UserAuthManager(IUserOperationClaimRepository userOperationClaimRepository, IRefreshTokenRepository refreshTokenRepository, ITokenHelper tokenHelper)
         {
             _userOperationClaimRepository = userOperationClaimRepository;
+            _refreshTokenRepository = refreshTokenRepository;
             _tokenHelper = tokenHelper;
         }
 
@@ -29,6 +31,18 @@ namespace Application.Services.UserAuthService
 
             AccessToken accessToken = _tokenHelper.CreateToken(user, operationClaims);
             return accessToken;
+        }
+
+        public async Task<RefreshToken> CreateRefreshToken(User user, string ipAddress)
+        {
+            RefreshToken refreshToken = _tokenHelper.CreateRefreshToken(user, ipAddress);
+            return await Task.FromResult(refreshToken);
+        }
+
+        public async Task<RefreshToken> AddRefreshToken(RefreshToken refreshToken)
+        {
+            RefreshToken addedRefreshToken = await _refreshTokenRepository.AddAsync(refreshToken);
+            return addedRefreshToken;
         }
     }
 }

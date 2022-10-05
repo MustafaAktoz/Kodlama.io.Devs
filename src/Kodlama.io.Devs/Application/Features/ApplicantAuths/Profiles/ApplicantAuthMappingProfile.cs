@@ -1,6 +1,7 @@
 ﻿using Application.Features.ApplicantAuths.Commands.RegisterApplicantAuth;
 using Application.Features.ApplicantAuths.Dtos;
 using AutoMapper;
+using Core.Security.Dtos;
 using Core.Security.JWT;
 using Domain.Entities;
 using System;
@@ -15,7 +16,7 @@ namespace Application.Features.ApplicantAuths.Profiles
     {
         public ApplicantAuthMappingProfile()
         {
-            CreateMap<RegisterApplicantAuthCommand, Applicant>().ReverseMap();
+            CreateMap<UserForRegisterDto, Applicant>().ReverseMap();
             CreateMap<RegisterApplicantAuthResultDto, AccessToken>().ReverseMap();
         }
     }

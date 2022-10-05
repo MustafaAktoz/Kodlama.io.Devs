@@ -23,6 +23,7 @@ namespace Persistence
             services.AddScoped<IApplicantRepository, ApplicantRepository>();
             services.AddScoped<IOperationClaimRepository, OperationClaimRepository>();
             services.AddScoped<IUserOperationClaimRepository, UserOperationClaimRepository>();
+            services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
         }
     }
 }
