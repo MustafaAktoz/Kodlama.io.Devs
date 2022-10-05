@@ -1,6 +1,8 @@
-﻿using Application.Features.UserOperationClaims.Dtos;
+﻿using Application.Enums;
+using Application.Features.UserOperationClaims.Dtos;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Core.Security.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -12,8 +14,10 @@ using System.Threading.Tasks;
 
 namespace Application.Features.UserOperationClaims.Commands.UpdateUserOperationClaim
 {
-    public class UpdateUserOperationClaimCommand : IRequest<UpdateUserOperationClaimResultDto>
+    public class UpdateUserOperationClaimCommand : IRequest<UpdateUserOperationClaimResultDto>, ISecuredRequest
     {
+        public string[] Roles => new[] { ClaimRoles.admin.ToString() };
+
         public int Id { get; set; }
         public int UserId { get; set; }
         public int OperationClaimId { get; set; }

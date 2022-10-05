@@ -1,6 +1,8 @@
-﻿using Application.Features.OperationClaims.Models;
+﻿using Application.Enums;
+using Application.Features.OperationClaims.Models;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Core.Application.Requests;
 using Core.Persistence.Paging;
 using Core.Security.Entities;
@@ -13,8 +15,10 @@ using System.Threading.Tasks;
 
 namespace Application.Features.OperationClaims.Queries.GetAllOperationClaim
 {
-    public class GetAllOperationClaimQuery : IPageRequest, IRequest<GetAllOperationClaimResultModel>
+    public class GetAllOperationClaimQuery : IPageRequest, IRequest<GetAllOperationClaimResultModel>, ISecuredRequest
     {
+        public string[] Roles => new[] { ClaimRoles.admin.ToString() };
+
         public int Page { get; set; }
         public int PageSize { get; set; }
 

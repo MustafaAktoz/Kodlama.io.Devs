@@ -1,4 +1,5 @@
-﻿using Core.Security.Entities;
+﻿using Application.Enums;
+using Core.Security.Entities;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -97,7 +98,7 @@ namespace Persistence.Contexts
             Technology[] technologySeeds = { new(1, 1, "ASP.NET"), new(2, 1, "WPF") };
             modelBuilder.Entity<Technology>().HasData(technologySeeds);
 
-            OperationClaim[] operationClaimSeeds = { new(1, "admin") };
+            OperationClaim[] operationClaimSeeds = { new(1, ClaimRoles.admin.ToString() ) };
             modelBuilder.Entity<OperationClaim>().HasData(operationClaimSeeds);
         }
     }

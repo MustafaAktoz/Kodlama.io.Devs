@@ -1,6 +1,8 @@
-﻿using Application.Features.Technologies.Dtos;
+﻿using Application.Enums;
+using Application.Features.Technologies.Dtos;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -12,8 +14,10 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Technologies.Commands.DeleteTechnology
 {
-    public class DeleteTechnologyCommand:IRequest<DeleteTechnologyResultDto>
+    public class DeleteTechnologyCommand:IRequest<DeleteTechnologyResultDto>, ISecuredRequest
     {
+        public string[] Roles => new[] { ClaimRoles.admin.ToString() };
+
         public int Id { get; set; }
 
         public class DeleteTechnologyCommandHandler : IRequestHandler<DeleteTechnologyCommand, DeleteTechnologyResultDto>

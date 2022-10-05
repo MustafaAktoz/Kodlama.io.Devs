@@ -1,4 +1,5 @@
-﻿using Application.Features.ProgrammingLanguages.Dtos;
+﻿using Application.Enums;
+using Application.Features.ProgrammingLanguages.Dtos;
 using Application.Features.ProgrammingLanguages.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
@@ -15,9 +16,9 @@ namespace Application.Features.ProgrammingLanguages.Commands.CreateProgrammingLa
 {
     public class CreateProgrammingLanguageCommand : IRequest<CreateProgrammingLanguageResultDto>, ISecuredRequest
     {
-        public string Name { get; set; }
+        public string[] Roles => new[]{ ClaimRoles.admin.ToString() };
 
-        public string[] Roles => new[]{ "admin" };
+        public string Name { get; set; }
 
         public class CreateProgrammingLanguageCommandHandler : IRequestHandler<CreateProgrammingLanguageCommand, CreateProgrammingLanguageResultDto>
         {

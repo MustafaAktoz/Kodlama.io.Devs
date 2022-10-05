@@ -1,6 +1,8 @@
-﻿using Application.Features.UserOperationClaims.Dtos;
+﻿using Application.Enums;
+using Application.Features.UserOperationClaims.Dtos;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Core.Security.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -12,8 +14,10 @@ using System.Threading.Tasks;
 
 namespace Application.Features.UserOperationClaims.Commands.CreateUserOperationClaim
 {
-    public class CreateUserOperationClaimCommand : IRequest<CreateUserOperationClaimResultDto>
+    public class CreateUserOperationClaimCommand : IRequest<CreateUserOperationClaimResultDto>, ISecuredRequest
     {
+        public string[] Roles => new[] { ClaimRoles.admin.ToString() };
+
         public int UserId { get; set; }
         public int OperationClaimId { get; set; }
 
@@ -32,7 +36,7 @@ namespace Application.Features.UserOperationClaims.Commands.CreateUserOperationC
             {
                 UserOperationClaim userOperationClaim = _mapper.Map<UserOperationClaim>(request);
                 UserOperationClaim addedUserOperationClaim = await _userOperationClaimRepository.AddAsync(userOperationClaim);
-                UserOperationClaim? getUserOperationClaimResult = await _userOperationClaimRepository.GetAsync(uoc=>uoc.Id == addedUserOperationClaim.Id, include:i=>i.Include(uoc=>uoc.User).Include(uoc=>uoc.OperationClaim));
+                UserOperationClaim? getUserOperationClaimResult = await _userOperationClaimRepository.GetAsync(uoc => uoc.Id == addedUserOperationClaim.Id, include: i => i.Include(uoc => uoc.User).Include(uoc => uoc.OperationClaim));
                 CreateUserOperationClaimResultDto createUserOperationClaimResultDto = _mapper.Map<CreateUserOperationClaimResultDto>(getUserOperationClaimResult);
 
                 return createUserOperationClaimResultDto;

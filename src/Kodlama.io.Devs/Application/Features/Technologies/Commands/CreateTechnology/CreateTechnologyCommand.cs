@@ -1,6 +1,8 @@
-﻿using Application.Features.Technologies.Dtos;
+﻿using Application.Enums;
+using Application.Features.Technologies.Dtos;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -12,8 +14,10 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Technologies.Commands.CreateTechnology
 {
-    public class CreateTechnologyCommand:IRequest<CreateTechnologyResultDto>
+    public class CreateTechnologyCommand:IRequest<CreateTechnologyResultDto>, ISecuredRequest
     {
+        public string[] Roles => new[] { ClaimRoles.admin.ToString() };
+
         public int ProgrammingLanguageId { get; set; }
         public string Name { get; set; }
 

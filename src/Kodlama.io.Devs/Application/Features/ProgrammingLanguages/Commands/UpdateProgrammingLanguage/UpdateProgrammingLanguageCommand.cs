@@ -1,7 +1,9 @@
-﻿using Application.Features.ProgrammingLanguages.Dtos;
+﻿using Application.Enums;
+using Application.Features.ProgrammingLanguages.Dtos;
 using Application.Features.ProgrammingLanguages.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using MediatR;
 using System;
@@ -13,8 +15,10 @@ using System.Threading.Tasks;
 
 namespace Application.Features.ProgrammingLanguages.Commands.UpdateProgrammingLanguage
 {
-    public class UpdateProgrammingLanguageCommand:IRequest<UpdateProgrammingLanguageResultDto>
+    public class UpdateProgrammingLanguageCommand:IRequest<UpdateProgrammingLanguageResultDto>, ISecuredRequest
     {
+        public string[] Roles => new[] { ClaimRoles.admin.ToString() };
+
         public int Id { get; set; }
         public string Name { get; set; }
 

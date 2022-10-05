@@ -1,6 +1,8 @@
-﻿using Application.Features.UserOperationClaims.Dtos;
+﻿using Application.Enums;
+using Application.Features.UserOperationClaims.Dtos;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Core.Security.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -12,8 +14,10 @@ using System.Threading.Tasks;
 
 namespace Application.Features.UserOperationClaims.Commands.DeleteUserOperationClaim
 {
-    public class DeleteUserOperationClaimCommand : IRequest<DeleteUserOperationClaimResultDto>
+    public class DeleteUserOperationClaimCommand : IRequest<DeleteUserOperationClaimResultDto>, ISecuredRequest
     {
+        public string[] Roles => new[] { ClaimRoles.admin.ToString() };
+
         public int Id { get; set; }
 
         public class DeleteUserOperationClaimCommandHandler : IRequestHandler<DeleteUserOperationClaimCommand, DeleteUserOperationClaimResultDto>
