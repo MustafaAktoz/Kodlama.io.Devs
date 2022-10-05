@@ -30,7 +30,9 @@ namespace Application.Features.OperationClaims.Commands.CreateOperationClaim
             {
                 OperationClaim operationClaim = _mapper.Map<OperationClaim>(request);
                 OperationClaim addedOperationClaim = await _operationClaimRepository.AddAsync(operationClaim);
-                return null;
+                CreateOperationClaimResultDto createOperationClaimResultDto = _mapper.Map<CreateOperationClaimResultDto>(addedOperationClaim);
+
+                return createOperationClaimResultDto;
             }
         }
     }

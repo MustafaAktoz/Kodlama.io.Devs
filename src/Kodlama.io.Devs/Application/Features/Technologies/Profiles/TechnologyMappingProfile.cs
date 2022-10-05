@@ -26,7 +26,6 @@ namespace Application.Features.Technologies.Profiles
             CreateMap<UpdateTechnologyCommand, Technology>().ReverseMap();
             CreateMap<UpdateTechnologyResultDto, Technology>().ReverseMap().ForMember(left => left.ProgrammingLanguageName, opt => opt.MapFrom(right => right.ProgrammingLanguage.Name));
 
-            CreateMap<DeleteTechnologyCommand, Technology>().ReverseMap();
             CreateMap<DeleteTechnologyResultDto, Technology>().ReverseMap().ForMember(left => left.ProgrammingLanguageName, opt => opt.MapFrom(right => right.ProgrammingLanguage.Name));
 
             CreateMap<GetAllTechnologyResultModel, IPaginate<Technology>>().ForMember(right=>right.Items, opt =>opt.MapFrom(left=>left.GetAllTechnologyResultDtos)).ReverseMap();
