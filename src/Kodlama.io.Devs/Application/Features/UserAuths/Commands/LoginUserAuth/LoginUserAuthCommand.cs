@@ -40,10 +40,10 @@ namespace Application.Features.UserAuths.Commands.LoginUserAuth
                 User? user = await _userRepository.GetAsync(u=>u.Email == request.UserForLoginDto.Email);
                 await _userAuthBusinessRules.AValidPasswordMustBeEnteredWhenLoggedIn(request.UserForLoginDto.Password, user.PasswordHash, user.PasswordSalt);
 
-                AccessToken accessToken = await _userAuthService.CreateAccessToken(user);
-                RefreshToken refreshToken = await _userAuthService.CreateRefreshToken(user, request.IpAddress);
-                RefreshToken addedRefreshToken = await _userAuthService.AddRefreshToken(refreshToken);
-                LoginUserAuthResultDto loginUserAuthResultDto = new() { AccessToken = accessToken, RefreshToken = refreshToken};
+                AccessToken createdAccessToken = await _userAuthService.CreateAccessToken(user);
+                RefreshToken createdRefreshToken = await _userAuthService.CreateRefreshToken(user, request.IpAddress);
+                RefreshToken addedRefreshToken = await _userAuthService.AddRefreshToken(createdRefreshToken);
+                LoginUserAuthResultDto loginUserAuthResultDto = new() { AccessToken = createdAccessToken, RefreshToken = addedRefreshToken };
 
                 return loginUserAuthResultDto;
             }

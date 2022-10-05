@@ -50,10 +50,10 @@ namespace Application.Features.ApplicantAuths.Commands.RegisterApplicantAuth
                 applicant.Status = true;
 
                 Applicant addedApplicant = await _applicantRepository.AddAsync(applicant);
-                AccessToken accessToken = await _userAuthService.CreateAccessToken(addedApplicant);
-                RefreshToken refreshToken = await _userAuthService.CreateRefreshToken(addedApplicant, request.IpAddress);
-                RefreshToken addedRefreshToken = await _userAuthService.AddRefreshToken(refreshToken);
-                RegisterApplicantAuthResultDto registerApplicantAuthResultDto = new() { AccessToken = accessToken, RefreshToken = addedRefreshToken };
+                AccessToken createdAccessToken = await _userAuthService.CreateAccessToken(addedApplicant);
+                RefreshToken createdRefreshToken = await _userAuthService.CreateRefreshToken(addedApplicant, request.IpAddress);
+                RefreshToken addedRefreshToken = await _userAuthService.AddRefreshToken(createdRefreshToken);
+                RegisterApplicantAuthResultDto registerApplicantAuthResultDto = new() { AccessToken = createdAccessToken, RefreshToken = addedRefreshToken };
 
                 return registerApplicantAuthResultDto;
             }
