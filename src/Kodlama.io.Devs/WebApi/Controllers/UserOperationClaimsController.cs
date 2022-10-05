@@ -6,10 +6,9 @@ using Application.Features.OperationClaims.Models;
 using Application.Features.OperationClaims.Queries.GetAllOperationClaim;
 using Application.Features.UserOperationClaims.Commands.CreateUserOperationClaim;
 using Application.Features.UserOperationClaims.Commands.DeleteUserOperationClaim;
-using Application.Features.UserOperationClaims.Commands.UpdateUserOperationClaim;
 using Application.Features.UserOperationClaims.Dtos;
 using Application.Features.UserOperationClaims.Models;
-using Application.Features.UserOperationClaims.Queries.GetAllUserOperationClaim;
+using Application.Features.UserOperationClaims.Queries.GetAllByUserIdUserOperationClaim;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,13 +23,6 @@ namespace WebApi.Controllers
             return Created("", createUserOperationClaimResultDto);
         }
 
-        [HttpPost("update")]
-        public async Task<IActionResult> Update([FromBody] UpdateUserOperationClaimCommand updateUserOperationClaimCommand)
-        {
-            UpdateUserOperationClaimResultDto updateUserOperationClaimResultDto = await Mediator.Send(updateUserOperationClaimCommand);
-            return Ok(updateUserOperationClaimResultDto);
-        }
-
         [HttpPost("delete")]
         public async Task<IActionResult> Delete([FromBody] DeleteUserOperationClaimCommand deleteUserOperationClaimCommand)
         {
@@ -38,11 +30,11 @@ namespace WebApi.Controllers
             return Ok(deleteUserOperationClaimResultDto);
         }
 
-        [HttpGet("getAll")]
-        public async Task<IActionResult> GetAll([FromQuery] GetAllUserOperationClaimQuery getAllUserOperationClaimQuery)
+        [HttpGet("getAllByUserId")]
+        public async Task<IActionResult> GetAllByUserId([FromQuery] GetAllByUserIdUserOperationClaimQuery getAllByUserIdUserOperationClaimQuery)
         {
-            GetAllUserOperationClaimResultModel getAllUserOperationClaimResultModel = await Mediator.Send(getAllUserOperationClaimQuery);
-            return Ok(getAllUserOperationClaimResultModel);
+            GetAllByUserIdUserOperationClaimResultModel getAllByUserIdUserOperationClaimResultModel = await Mediator.Send(getAllByUserIdUserOperationClaimQuery);
+            return Ok(getAllByUserIdUserOperationClaimResultModel);
         }
     }
 }

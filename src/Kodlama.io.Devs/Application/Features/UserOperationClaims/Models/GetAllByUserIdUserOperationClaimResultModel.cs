@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace Application.Features.UserOperationClaims.Models
 {
-    public class GetAllUserOperationClaimResultModel:BasePageableModel
+    public class GetAllByUserIdUserOperationClaimResultModel:BasePageableModel
     {
-        public IList<GetAllUserOperationClaimResultDto> GetAllUserOperationClaimResultDtos { get; set; }
+        public IList<GetAllByUserIdUserOperationClaimResultDto> GetAllByUserIdUserOperationClaimResultDtos { get; set; }
     }
 }
