@@ -1,5 +1,7 @@
-﻿using Application.Features.ProgrammingLanguages.Rules;
+﻿using Application.Features.OperationClaims.Rules;
+using Application.Features.ProgrammingLanguages.Rules;
 using Application.Features.UserAuths.Rules;
+using Application.Features.UserOperationClaims.Rules;
 using Application.Services.HttpRequestService;
 using Application.Services.UserAuthService;
 using Core.Application.Pipelines.Authorization;
@@ -25,10 +27,14 @@ namespace Application
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddMediatR(Assembly.GetExecutingAssembly());
 
-            services.AddScoped<ProgrammingLanguageBusinessRules>();
             services.AddScoped<UserAuthBusinessRules>();
             services.AddScoped<IUserAuthService, UserAuthManager>();
             services.AddScoped<IHttpContextService, HttpContextManager>();
+
+            services.AddScoped<ProgrammingLanguageBusinessRules>();
+            services.AddScoped<OperationClaimBusinessRules>();
+            services.AddScoped<UserOperationClaimBusinessRules>();
+
 
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(AuthorizationBehavior<,>));

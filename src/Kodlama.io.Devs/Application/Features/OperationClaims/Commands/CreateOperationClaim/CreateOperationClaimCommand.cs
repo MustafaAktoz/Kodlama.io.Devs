@@ -1,5 +1,6 @@
 ﻿using Application.Enums;
 using Application.Features.OperationClaims.Dtos;
+using Application.Features.OperationClaims.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
@@ -23,15 +24,19 @@ namespace Application.Features.OperationClaims.Commands.CreateOperationClaim
         {
             private readonly IOperationClaimRepository _operationClaimRepository;
             private readonly IMapper _mapper;
+            private readonly OperationClaimBusinessRules _operationClaimBusinessRules;
 
-            public CreateOperationClaimCommandHandler(IOperationClaimRepository operationClaimRepository, IMapper mapper)
+            public CreateOperationClaimCommandHandler(IOperationClaimRepository operationClaimRepository, IMapper mapper, OperationClaimBusinessRules operationClaimBusinessRules)
             {
                 _operationClaimRepository = operationClaimRepository;
                 _mapper = mapper;
+                _operationClaimBusinessRules = operationClaimBusinessRules;
             }
 
             public async Task<CreateOperationClaimResultDto> Handle(CreateOperationClaimCommand request, CancellationToken cancellationToken)
             {
+                await _operationClaimBusinessRules.NameCanNotBeDuplicatedWhenCreated(request.Name);
+
                 OperationClaim operationClaim = _mapper.Map<OperationClaim>(request);
                 OperationClaim addedOperationClaim = await _operationClaimRepository.AddAsync(operationClaim);
                 CreateOperationClaimResultDto createOperationClaimResultDto = _mapper.Map<CreateOperationClaimResultDto>(addedOperationClaim);

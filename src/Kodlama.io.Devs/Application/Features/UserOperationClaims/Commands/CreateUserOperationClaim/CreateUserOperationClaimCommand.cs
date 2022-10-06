@@ -1,5 +1,6 @@
 ﻿using Application.Enums;
 using Application.Features.UserOperationClaims.Dtos;
+using Application.Features.UserOperationClaims.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
@@ -25,15 +26,19 @@ namespace Application.Features.UserOperationClaims.Commands.CreateUserOperationC
         {
             private readonly IUserOperationClaimRepository _userOperationClaimRepository;
             private readonly IMapper _mapper;
+            private readonly UserOperationClaimBusinessRules _userOperationClaimBusinessRules;
 
-            public CreateUserOperationClaimCommandHandler(IUserOperationClaimRepository userOperationClaimRepository, IMapper mapper)
+            public CreateUserOperationClaimCommandHandler(IUserOperationClaimRepository userOperationClaimRepository, IMapper mapper, UserOperationClaimBusinessRules userOperationClaimBusinessRules)
             {
                 _userOperationClaimRepository = userOperationClaimRepository;
                 _mapper = mapper;
+                _userOperationClaimBusinessRules = userOperationClaimBusinessRules;
             }
 
             public async Task<CreateUserOperationClaimResultDto> Handle(CreateUserOperationClaimCommand request, CancellationToken cancellationToken)
             {
+                await _userOperationClaimBusinessRules.ThisOperationClaimCannotBeDuplicatedForThisUserWhenCreated(request.UserId, request.OperationClaimId);
+
                 UserOperationClaim userOperationClaim = _mapper.Map<UserOperationClaim>(request);
                 UserOperationClaim addedUserOperationClaim = await _userOperationClaimRepository.AddAsync(userOperationClaim);
                 UserOperationClaim? getUserOperationClaimResult = await _userOperationClaimRepository.GetAsync(uoc => uoc.Id == addedUserOperationClaim.Id, include: i => i.Include(uoc => uoc.User).Include(uoc => uoc.OperationClaim));
