@@ -1,6 +1,5 @@
 ﻿using Application.Features.ApplicantAuths.Commands.RegisterApplicantAuth;
 using Application.Features.ApplicantAuths.Dtos;
-using Core.Security.Dtos;
 using Core.Security.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,10 +8,8 @@ namespace WebApi.Controllers
     public class ApplicantAuthsController : BaseController
     {
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] UserForRegisterDto userForRegisterDto)
+        public async Task<IActionResult> Register([FromBody] RegisterApplicantAuthCommand registerApplicantAuthCommand)
         {
-            RegisterApplicantAuthCommand registerApplicantAuthCommand = new() { UserForRegisterDto = userForRegisterDto, IpAddress = GetIpAddress() };
-            
             RegisterApplicantAuthResultDto registerApplicantAuthResultDto = await Mediator.Send(registerApplicantAuthCommand);
             SetRefreshTokenToCookie(registerApplicantAuthResultDto.RefreshToken);
             return Created("", registerApplicantAuthResultDto.AccessToken);

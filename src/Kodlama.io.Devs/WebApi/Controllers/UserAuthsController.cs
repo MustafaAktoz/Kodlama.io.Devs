@@ -1,6 +1,5 @@
 ﻿using Application.Features.UserAuths.Commands.LoginUserAuth;
 using Application.Features.UserAuths.Dtos;
-using Core.Security.Dtos;
 using Core.Security.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,10 +8,8 @@ namespace WebApi.Controllers
     public class UserAuthsController:BaseController
     {
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] UserForLoginDto userForLoginDto)
+        public async Task<IActionResult> Login([FromBody] LoginUserAuthCommand loginUserAuthCommand)
         {
-            LoginUserAuthCommand loginUserAuthCommand = new() { UserForLoginDto = userForLoginDto, IpAddress = GetIpAddress() };
-            
             LoginUserAuthResultDto loginUserAuthResultDto = await Mediator.Send(loginUserAuthCommand);
             SetRefreshTokenToCookie(loginUserAuthResultDto.RefreshToken);
             return Ok(loginUserAuthResultDto.AccessToken);

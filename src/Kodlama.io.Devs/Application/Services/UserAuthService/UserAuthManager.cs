@@ -1,4 +1,5 @@
-﻿using Application.Services.Repositories;
+﻿using Application.Services.HttpRequestService;
+using Application.Services.Repositories;
 using Core.Persistence.Paging;
 using Core.Security.Entities;
 using Core.Security.JWT;
@@ -16,12 +17,14 @@ namespace Application.Services.UserAuthService
         private readonly IUserOperationClaimRepository _userOperationClaimRepository;
         private readonly IRefreshTokenRepository _refreshTokenRepository;
         private readonly ITokenHelper _tokenHelper;
+        private readonly IHttpContextService _httpContextService;
 
-        public UserAuthManager(IUserOperationClaimRepository userOperationClaimRepository, IRefreshTokenRepository refreshTokenRepository, ITokenHelper tokenHelper)
+        public UserAuthManager(IUserOperationClaimRepository userOperationClaimRepository, IRefreshTokenRepository refreshTokenRepository, ITokenHelper tokenHelper, IHttpContextService httpContextService)
         {
             _userOperationClaimRepository = userOperationClaimRepository;
             _refreshTokenRepository = refreshTokenRepository;
             _tokenHelper = tokenHelper;
+            _httpContextService = httpContextService;
         }
 
         public async Task<AccessToken> CreateAccessToken(User user)
@@ -33,8 +36,9 @@ namespace Application.Services.UserAuthService
             return accessToken;
         }
 
-        public async Task<RefreshToken> CreateRefreshToken(User user, string ipAddress)
+        public async Task<RefreshToken> CreateRefreshToken(User user)
         {
+            var ipAddress = _httpContextService.GetIpAddress();
             RefreshToken refreshToken = _tokenHelper.CreateRefreshToken(user, ipAddress);
             return await Task.FromResult(refreshToken);
         }

@@ -11,14 +11,15 @@ using Application.Services.Repositories;
 using Core.Security.Entities;
 using Application.Services.UserAuthService;
 using Core.Security.JWT;
-using Core.Security.Dtos;
+using Core.Security.AbstractObjects;
 
 namespace Application.Features.UserAuths.Commands.LoginUserAuth
 {
-    public class LoginUserAuthCommand : IRequest<LoginUserAuthResultDto>
+    public class LoginUserAuthCommand : IUserForLogin, IRequest<LoginUserAuthResultDto>
     {
-        public UserForLoginDto UserForLoginDto { get; set; }
-        public string IpAddress { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
+        public string? AuthenticatorCode { get; set; }
 
         public class LoginUserAuthCommandHandler : IRequestHandler<LoginUserAuthCommand, LoginUserAuthResultDto>
         {
@@ -35,13 +36,13 @@ namespace Application.Features.UserAuths.Commands.LoginUserAuth
 
             public async Task<LoginUserAuthResultDto> Handle(LoginUserAuthCommand request, CancellationToken cancellationToken)
             {
-                await _userAuthBusinessRules.MustBeAValidEmailWhenLoggedIn(request.UserForLoginDto.Email);
+                await _userAuthBusinessRules.MustBeAValidEmailWhenLoggedIn(request.Email);
 
-                User? user = await _userRepository.GetAsync(u=>u.Email == request.UserForLoginDto.Email);
-                await _userAuthBusinessRules.AValidPasswordMustBeEnteredWhenLoggedIn(request.UserForLoginDto.Password, user.PasswordHash, user.PasswordSalt);
+                User? user = await _userRepository.GetAsync(u=>u.Email == request.Email);
+                await _userAuthBusinessRules.AValidPasswordMustBeEnteredWhenLoggedIn(request.Password, user.PasswordHash, user.PasswordSalt);
 
                 AccessToken createdAccessToken = await _userAuthService.CreateAccessToken(user);
-                RefreshToken createdRefreshToken = await _userAuthService.CreateRefreshToken(user, request.IpAddress);
+                RefreshToken createdRefreshToken = await _userAuthService.CreateRefreshToken(user);
                 RefreshToken addedRefreshToken = await _userAuthService.AddRefreshToken(createdRefreshToken);
                 LoginUserAuthResultDto loginUserAuthResultDto = new() { AccessToken = createdAccessToken, RefreshToken = addedRefreshToken };
 
