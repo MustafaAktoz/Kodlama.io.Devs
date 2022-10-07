@@ -13,11 +13,7 @@ namespace Application.Features.Applicants.Profiles
     {
         public ApplicantMappingProfile()
         {
-            CreateMap<AddGitHubAddressApplicantResultDto, Applicant>().ReverseMap();
-
             CreateMap<UpdateGitHubAddressApplicantResultDto, Applicant>().ReverseMap();
-
-            CreateMap<DeleteGitHubAddressApplicantResultDto, Applicant>().ReverseMap();
         }
     }
 }

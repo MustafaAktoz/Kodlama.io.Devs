@@ -14,7 +14,7 @@ namespace Application.Features.Applicants.Commands.UpdateGitHubAddressApplicant
     public class UpdateGitHubAddressApplicantCommand:IRequest<UpdateGitHubAddressApplicantResultDto>
     {
         public int Id { get; set; }
-        public string GitHubAddress { get; set; }
+        public string? GitHubAddress { get; set; }
 
         public class UpdateGitHubAddressApplicantCommandHandler : IRequestHandler<UpdateGitHubAddressApplicantCommand, UpdateGitHubAddressApplicantResultDto>
         {
