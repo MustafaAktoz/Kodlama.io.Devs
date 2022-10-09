@@ -30,6 +30,7 @@ namespace Persistence.Contexts
                 a.ToTable("ProgrammingLanguages").HasKey(k => k.Id);
                 a.Property(p => p.Id).HasColumnName("Id");
                 a.Property(p => p.Name).HasColumnName("Name");
+                a.HasIndex(p => p.Name).IsUnique();
                 a.HasMany(p => p.Technologies);
             });
 
@@ -39,6 +40,7 @@ namespace Persistence.Contexts
                 a.Property(p => p.Id).HasColumnName("Id");
                 a.Property(p => p.ProgrammingLanguageId).HasColumnName("ProgrammingLanguageId");
                 a.Property(p => p.Name).HasColumnName("Name");
+                a.HasIndex(p => p.Name).IsUnique();
                 a.HasOne(p => p.ProgrammingLanguage);
             });
 
@@ -49,6 +51,7 @@ namespace Persistence.Contexts
                 a.Property(p => p.FirstName).HasColumnName("FirstName");
                 a.Property(p => p.LastName).HasColumnName("LastName");
                 a.Property(p => p.Email).HasColumnName("Email");
+                a.HasIndex(p => p.Email).IsUnique();
                 a.Property(p => p.PasswordHash).HasColumnName("PasswordHash");
                 a.Property(p => p.PasswordSalt).HasColumnName("PasswordSalt");
                 a.Property(p => p.Status).HasColumnName("Status");
@@ -66,6 +69,7 @@ namespace Persistence.Contexts
             {
                 a.ToTable("OperationClaims").HasKey(k => k.Id);
                 a.Property(p => p.Name).HasColumnName("Name");
+                a.HasIndex(p => p.Name).IsUnique();
             });
 
             modelBuilder.Entity<UserOperationClaim>(a =>
@@ -73,6 +77,7 @@ namespace Persistence.Contexts
                 a.ToTable("UserOperationClaims").HasKey(k => k.Id);
                 a.Property(p => p.UserId).HasColumnName("UserId");
                 a.Property(p => p.OperationClaimId).HasColumnName("OperationClaimId");
+                a.HasIndex(p => new { p.UserId, p.OperationClaimId }).IsUnique();
                 a.HasOne(p => p.User);
                 a.HasOne(p => p.OperationClaim);
             });
@@ -98,7 +103,7 @@ namespace Persistence.Contexts
             Technology[] technologySeeds = { new(1, 1, "ASP.NET"), new(2, 1, "WPF") };
             modelBuilder.Entity<Technology>().HasData(technologySeeds);
 
-            OperationClaim[] operationClaimSeeds = { new(1, ClaimRoles.admin.ToString() ) };
+            OperationClaim[] operationClaimSeeds = { new(1, ClaimRoles.admin.ToString()) };
             modelBuilder.Entity<OperationClaim>().HasData(operationClaimSeeds);
         }
     }
