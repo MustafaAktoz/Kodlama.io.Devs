@@ -39,8 +39,8 @@ namespace WebApi.Controllers
             return Ok(getAllTechnologyResultModel);
         }
 
-        [HttpGet("getAllByDynamic")]
-        public async Task<IActionResult> GetAllByDynamic([FromQuery] GetAllByDynamicTechnologyQuery getAllByDynamicTechnologyQuery)
+        [HttpPost("getAllByDynamic")]
+        public async Task<IActionResult> GetAllByDynamic([FromBody] GetAllByDynamicTechnologyQuery getAllByDynamicTechnologyQuery)
         {
             GetAllTechnologyResultModel getAllTechnologyResultModel = await Mediator.Send(getAllByDynamicTechnologyQuery);
             return Ok(getAllTechnologyResultModel);

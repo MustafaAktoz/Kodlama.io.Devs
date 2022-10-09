@@ -23,8 +23,8 @@ namespace Application.Features.UserAuths.Rules
 
         public async Task MustBeAValidEmailWhenLoggedIn(string email)
         {
-            User? user = await _userRepository.GetAsync(u => u.Email == email);
-            if (user == null) throw new BusinessException(UserAuthMessages.EmailNotFound);
+            User? getByEmailUserResult = await _userRepository.GetAsync(u => u.Email == email);
+            if (getByEmailUserResult == null) throw new BusinessException(UserAuthMessages.EmailNotFound);
         }
 
         public async Task AValidPasswordMustBeEnteredWhenLoggedIn(string password, byte[] passwordHash, byte[] passwordSalt)
@@ -35,8 +35,8 @@ namespace Application.Features.UserAuths.Rules
 
         public async Task EmailCanNotBeDuplicatedWhenRegistered(string email)
         {
-            User? user = await _userRepository.GetAsync(u => u.Email == email);
-            if (user != null) throw new BusinessException(UserAuthMessages.EmailIsAlreadyRegistered);
+            User? getByEmailUserResult = await _userRepository.GetAsync(u => u.Email == email);
+            if (getByEmailUserResult != null) throw new BusinessException(UserAuthMessages.EmailIsAlreadyRegistered);
         }
     }
 }

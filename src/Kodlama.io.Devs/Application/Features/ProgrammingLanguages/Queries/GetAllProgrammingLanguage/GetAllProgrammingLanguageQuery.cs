@@ -33,8 +33,8 @@ namespace Application.Features.ProgrammingLanguages.Queries.GetAllProgrammingLan
 
             public async Task<GetAllProgrammingLanguageResultModel> Handle(GetAllProgrammingLanguageQuery request, CancellationToken cancellationToken)
             {
-                IPaginate<ProgrammingLanguage> programmingLanguages = await _programmingLanguageRepository.GetListAsync(index: request.Page, size: request.PageSize);
-                GetAllProgrammingLanguageResultModel getAllProgrammingLanguageResultModel = _mapper.Map<GetAllProgrammingLanguageResultModel>(programmingLanguages);
+                IPaginate<ProgrammingLanguage> getListProgrammingLanguageResult = await _programmingLanguageRepository.GetListAsync(index: request.Page, size: request.PageSize);
+                GetAllProgrammingLanguageResultModel getAllProgrammingLanguageResultModel = _mapper.Map<GetAllProgrammingLanguageResultModel>(getListProgrammingLanguageResult);
 
                 return getAllProgrammingLanguageResultModel;
             }

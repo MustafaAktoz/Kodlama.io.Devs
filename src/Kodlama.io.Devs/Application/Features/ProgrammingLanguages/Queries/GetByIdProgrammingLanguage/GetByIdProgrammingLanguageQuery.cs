@@ -29,8 +29,8 @@ namespace Application.Features.ProgrammingLanguages.Queries.GetByIdProgrammingLa
 
             public async Task<GetByIdProgrammingLanguageResultDto> Handle(GetByIdProgrammingLanguageQuery request, CancellationToken cancellationToken)
             {
-                ProgrammingLanguage? programmingLanguage = await _programmingLanguageRepository.GetAsync(pl => pl.Id == request.Id);
-                GetByIdProgrammingLanguageResultDto getByIdProgrammingLanguageResultDto = _mapper.Map<GetByIdProgrammingLanguageResultDto>(programmingLanguage);
+                ProgrammingLanguage? getByIdProgrammingLanguageResult = await _programmingLanguageRepository.GetAsync(pl => pl.Id == request.Id);
+                GetByIdProgrammingLanguageResultDto getByIdProgrammingLanguageResultDto = _mapper.Map<GetByIdProgrammingLanguageResultDto>(getByIdProgrammingLanguageResult);
 
                 return getByIdProgrammingLanguageResultDto;
             }

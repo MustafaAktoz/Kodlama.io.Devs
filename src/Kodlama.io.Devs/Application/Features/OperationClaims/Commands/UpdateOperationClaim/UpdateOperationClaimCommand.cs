@@ -39,8 +39,8 @@ namespace Application.Features.OperationClaims.Commands.UpdateOperationClaim
                 await _operationClaimBusinessRules.NameCanNotBeDuplicatedWhenUpdated(request.Id, request.Name);
 
                 OperationClaim operationClaim = _mapper.Map<OperationClaim>(request);
-                OperationClaim updatedOperationClaim = await _operationClaimRepository.UpdateAsync(operationClaim);
-                UpdateOperationClaimResultDto updateOperationClaimResultDto = _mapper.Map<UpdateOperationClaimResultDto>(updatedOperationClaim);
+                OperationClaim updateOperationClaimResult = await _operationClaimRepository.UpdateAsync(operationClaim);
+                UpdateOperationClaimResultDto updateOperationClaimResultDto = _mapper.Map<UpdateOperationClaimResultDto>(updateOperationClaimResult);
 
                 return updateOperationClaimResultDto;
             }

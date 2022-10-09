@@ -51,11 +51,11 @@ namespace Application.Features.ApplicantAuths.Commands.RegisterApplicantAuth
                 applicant.PasswordSalt = passwordSalt;
                 applicant.Status = true;
 
-                Applicant addedApplicant = await _applicantRepository.AddAsync(applicant);
-                AccessToken createdAccessToken = await _userAuthService.CreateAccessToken(addedApplicant);
-                RefreshToken createdRefreshToken = await _userAuthService.CreateRefreshToken(addedApplicant);
-                RefreshToken addedRefreshToken = await _userAuthService.AddRefreshToken(createdRefreshToken);
-                RegisterApplicantAuthResultDto registerApplicantAuthResultDto = new() { AccessToken = createdAccessToken, RefreshToken = addedRefreshToken };
+                Applicant addApplicantResult = await _applicantRepository.AddAsync(applicant);
+                AccessToken createAccessTokenResult = await _userAuthService.CreateAccessToken(addApplicantResult);
+                RefreshToken createRefreshTokenResult = await _userAuthService.CreateRefreshToken(addApplicantResult);
+                RefreshToken addRefreshTokenResult = await _userAuthService.AddRefreshToken(createRefreshTokenResult);
+                RegisterApplicantAuthResultDto registerApplicantAuthResultDto = new() { AccessToken = createAccessTokenResult, RefreshToken = addRefreshTokenResult };
 
                 return registerApplicantAuthResultDto;
             }

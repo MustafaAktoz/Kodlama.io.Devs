@@ -35,9 +35,9 @@ namespace Application.Features.Technologies.Commands.CreateTechnology
             public async Task<CreateTechnologyResultDto> Handle(CreateTechnologyCommand request, CancellationToken cancellationToken)
             {
                 Technology technology = _mapper.Map<Technology>(request);
-                Technology addedTechnology = await _technologyRepository.AddAsync(technology);
-                Technology? getTechnologyResult = await _technologyRepository.GetAsync(t=>t.Id == addedTechnology.Id, include:i=>i.Include(t=>t.ProgrammingLanguage));
-                CreateTechnologyResultDto createTechnologyResultDto = _mapper.Map<CreateTechnologyResultDto>(getTechnologyResult);
+                Technology addTechnologyResult = await _technologyRepository.AddAsync(technology);
+                Technology? getByIdTechnologyResult = await _technologyRepository.GetAsync(t=>t.Id == addTechnologyResult.Id, include:i=>i.Include(t=>t.ProgrammingLanguage));
+                CreateTechnologyResultDto createTechnologyResultDto = _mapper.Map<CreateTechnologyResultDto>(getByIdTechnologyResult);
 
                 return createTechnologyResultDto;
             }

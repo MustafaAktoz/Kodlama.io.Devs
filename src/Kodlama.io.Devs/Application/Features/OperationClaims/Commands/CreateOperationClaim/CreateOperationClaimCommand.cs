@@ -38,8 +38,8 @@ namespace Application.Features.OperationClaims.Commands.CreateOperationClaim
                 await _operationClaimBusinessRules.NameCanNotBeDuplicatedWhenCreated(request.Name);
 
                 OperationClaim operationClaim = _mapper.Map<OperationClaim>(request);
-                OperationClaim addedOperationClaim = await _operationClaimRepository.AddAsync(operationClaim);
-                CreateOperationClaimResultDto createOperationClaimResultDto = _mapper.Map<CreateOperationClaimResultDto>(addedOperationClaim);
+                OperationClaim addOperationClaimResult = await _operationClaimRepository.AddAsync(operationClaim);
+                CreateOperationClaimResultDto createOperationClaimResultDto = _mapper.Map<CreateOperationClaimResultDto>(addOperationClaimResult);
 
                 return createOperationClaimResultDto;
             }

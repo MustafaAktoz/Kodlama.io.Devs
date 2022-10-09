@@ -33,9 +33,9 @@ namespace Application.Features.ProgrammingLanguages.Commands.DeleteProgrammingLa
 
             public async Task<DeleteProgrammingLanguageResultDto> Handle(DeleteProgrammingLanguageCommand request, CancellationToken cancellationToken)
             {
-                ProgrammingLanguage? programmingLanguage = await _programmingLanguageRepository.GetAsync(pl => pl.Id == request.Id);
-                ProgrammingLanguage deletedProgrammingLanguage = await _programmingLanguageRepository.DeleteAsync(programmingLanguage);
-                DeleteProgrammingLanguageResultDto deleteProgrammingLanguageResultDto = _mapper.Map<DeleteProgrammingLanguageResultDto>(deletedProgrammingLanguage);
+                ProgrammingLanguage? getByIdProgrammingLanguageResult = await _programmingLanguageRepository.GetAsync(pl => pl.Id == request.Id);
+                ProgrammingLanguage deleteProgrammingLanguageResult = await _programmingLanguageRepository.DeleteAsync(getByIdProgrammingLanguageResult);
+                DeleteProgrammingLanguageResultDto deleteProgrammingLanguageResultDto = _mapper.Map<DeleteProgrammingLanguageResultDto>(deleteProgrammingLanguageResult);
 
                 return deleteProgrammingLanguageResultDto;
             }

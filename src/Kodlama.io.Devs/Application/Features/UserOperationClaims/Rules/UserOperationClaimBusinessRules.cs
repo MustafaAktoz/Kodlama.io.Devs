@@ -22,8 +22,8 @@ namespace Application.Features.UserOperationClaims.Rules
 
         public async Task ThisOperationClaimCannotBeDuplicatedForThisUserWhenCreated(int userId, int operationCliamId)
         {
-            UserOperationClaim? userOperationClaim = await _userOperationClaimRepository.GetAsync(uoc => uoc.UserId == userId && uoc.OperationClaimId == operationCliamId);
-            if (userOperationClaim != null) throw new BusinessException(UserOperationClaimExceptionMessages.UserAlreadyHasThisOperationClaim);
+            UserOperationClaim? getByUserIdAndOperationClaimIdUserOperationClaimResult = await _userOperationClaimRepository.GetAsync(uoc => uoc.UserId == userId && uoc.OperationClaimId == operationCliamId);
+            if (getByUserIdAndOperationClaimIdUserOperationClaimResult != null) throw new BusinessException(UserOperationClaimExceptionMessages.UserAlreadyHasThisOperationClaim);
         }
     }
 }

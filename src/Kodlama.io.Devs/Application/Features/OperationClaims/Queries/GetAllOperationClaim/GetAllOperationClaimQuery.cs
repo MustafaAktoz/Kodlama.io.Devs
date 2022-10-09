@@ -35,8 +35,8 @@ namespace Application.Features.OperationClaims.Queries.GetAllOperationClaim
 
             public async Task<GetAllOperationClaimResultModel> Handle(GetAllOperationClaimQuery request, CancellationToken cancellationToken)
             {
-                IPaginate<OperationClaim> operationClaims = await _operationClaimRepository.GetListAsync();
-                GetAllOperationClaimResultModel getAllOperationClaimResultModel = _mapper.Map<GetAllOperationClaimResultModel>(operationClaims);
+                IPaginate<OperationClaim> getListOperationClaimResult = await _operationClaimRepository.GetListAsync();
+                GetAllOperationClaimResultModel getAllOperationClaimResultModel = _mapper.Map<GetAllOperationClaimResultModel>(getListOperationClaimResult);
 
                 return getAllOperationClaimResultModel;
             }

@@ -37,13 +37,13 @@ namespace Application.Features.Technologies.Queries.GetAllByDynamicTechnology
 
             public async Task<GetAllTechnologyResultModel> Handle(GetAllByDynamicTechnologyQuery request, CancellationToken cancellationToken)
             {
-                IPaginate<Technology> technologies = await _technologyRepository.GetListByDynamicAsync(
+                IPaginate<Technology> getListByDynamicTechnologyResult = await _technologyRepository.GetListByDynamicAsync(
                     dynamic: _mapper.Map<Dynamic>(request),
                     include: i => i.Include(t => t.ProgrammingLanguage),
                     index: request.Page,
                     size: request.PageSize
                     );
-                GetAllTechnologyResultModel getAllTechnologyResultModel = _mapper.Map<GetAllTechnologyResultModel>(technologies);
+                GetAllTechnologyResultModel getAllTechnologyResultModel = _mapper.Map<GetAllTechnologyResultModel>(getListByDynamicTechnologyResult);
 
                 return getAllTechnologyResultModel;
             }

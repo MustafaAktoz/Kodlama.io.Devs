@@ -33,12 +33,12 @@ namespace Application.Features.Technologies.Queries.GetAllTechnology
 
             public async Task<GetAllTechnologyResultModel> Handle(GetAllTechnologyQuery request, CancellationToken cancellationToken)
             {
-                IPaginate<Technology> technologies = await _technologyRepository.GetListAsync(
+                IPaginate<Technology> getListTechnologyResult = await _technologyRepository.GetListAsync(
                     include: i => i.Include(t => t.ProgrammingLanguage),
                     index: request.Page,
                     size: request.PageSize
                     );
-                GetAllTechnologyResultModel getAllTechnologyResultModel = _mapper.Map<GetAllTechnologyResultModel>(technologies);
+                GetAllTechnologyResultModel getAllTechnologyResultModel = _mapper.Map<GetAllTechnologyResultModel>(getListTechnologyResult);
 
                 return getAllTechnologyResultModel;
             }

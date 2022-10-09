@@ -32,9 +32,9 @@ namespace Application.Features.OperationClaims.Commands.DeleteOperationClaim
 
             public async Task<DeleteOperationClaimResultDto> Handle(DeleteOperationClaimCommand request, CancellationToken cancellationToken)
             {
-                OperationClaim? operationClaim = await _operationClaimRepository.GetAsync(oc => oc.Id == request.Id);
-                OperationClaim deletedOperationClaim = await _operationClaimRepository.DeleteAsync(operationClaim);
-                DeleteOperationClaimResultDto deleteOperationClaimResultDto = _mapper.Map<DeleteOperationClaimResultDto>(deletedOperationClaim);
+                OperationClaim? getByIdOperationClaimResult = await _operationClaimRepository.GetAsync(oc => oc.Id == request.Id);
+                OperationClaim deleteOperationClaimResult = await _operationClaimRepository.DeleteAsync(getByIdOperationClaimResult);
+                DeleteOperationClaimResultDto deleteOperationClaimResultDto = _mapper.Map<DeleteOperationClaimResultDto>(deleteOperationClaimResult);
 
                 return deleteOperationClaimResultDto;
             }

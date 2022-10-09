@@ -38,13 +38,13 @@ namespace Application.Features.UserAuths.Commands.LoginUserAuth
             {
                 await _userAuthBusinessRules.MustBeAValidEmailWhenLoggedIn(request.Email);
 
-                User? user = await _userRepository.GetAsync(u=>u.Email == request.Email);
-                await _userAuthBusinessRules.AValidPasswordMustBeEnteredWhenLoggedIn(request.Password, user.PasswordHash, user.PasswordSalt);
+                User? getByEmailUserResult = await _userRepository.GetAsync(u=>u.Email == request.Email);
+                await _userAuthBusinessRules.AValidPasswordMustBeEnteredWhenLoggedIn(request.Password, getByEmailUserResult.PasswordHash, getByEmailUserResult.PasswordSalt);
 
-                AccessToken createdAccessToken = await _userAuthService.CreateAccessToken(user);
-                RefreshToken createdRefreshToken = await _userAuthService.CreateRefreshToken(user);
-                RefreshToken addedRefreshToken = await _userAuthService.AddRefreshToken(createdRefreshToken);
-                LoginUserAuthResultDto loginUserAuthResultDto = new() { AccessToken = createdAccessToken, RefreshToken = addedRefreshToken };
+                AccessToken createAccessTokenResult = await _userAuthService.CreateAccessToken(getByEmailUserResult);
+                RefreshToken createRefreshTokenResult = await _userAuthService.CreateRefreshToken(getByEmailUserResult);
+                RefreshToken addRefreshTokenResult = await _userAuthService.AddRefreshToken(createRefreshTokenResult);
+                LoginUserAuthResultDto loginUserAuthResultDto = new() { AccessToken = createAccessTokenResult, RefreshToken = addRefreshTokenResult };
 
                 return loginUserAuthResultDto;
             }

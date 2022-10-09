@@ -36,9 +36,9 @@ namespace Application.Features.Technologies.Commands.UpdateTechnology
             public async Task<UpdateTechnologyResultDto> Handle(UpdateTechnologyCommand request, CancellationToken cancellationToken)
             {
                 Technology technology = _mapper.Map<Technology>(request);
-                Technology updatedTechnology = await _technologyRepository.UpdateAsync(technology);
-                Technology? getTechnologyResult = await _technologyRepository.GetAsync(t=>t.Id == updatedTechnology.Id, include:i=>i.Include(t=>t.ProgrammingLanguage));
-                UpdateTechnologyResultDto updateTechnologyResultDto = _mapper.Map<UpdateTechnologyResultDto>(getTechnologyResult);
+                Technology updateTechnologyResult = await _technologyRepository.UpdateAsync(technology);
+                Technology? getByIdTechnologyResult = await _technologyRepository.GetAsync(t=>t.Id == updateTechnologyResult.Id, include:i=>i.Include(t=>t.ProgrammingLanguage));
+                UpdateTechnologyResultDto updateTechnologyResultDto = _mapper.Map<UpdateTechnologyResultDto>(getByIdTechnologyResult);
 
                 return updateTechnologyResultDto;
             }

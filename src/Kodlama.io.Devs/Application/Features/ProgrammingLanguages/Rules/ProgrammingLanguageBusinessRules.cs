@@ -21,14 +21,14 @@ namespace Application.Features.ProgrammingLanguages.Rules
 
         public async Task NameCanNotBeDuplicatedWhenCreated(string name)
         {
-            ProgrammingLanguage? programmingLanguage = await _programmingLanguageRepository.GetAsync(pl => pl.Name == name);
-            if (programmingLanguage != null) throw new BusinessException(ProgrammingLanguageExceptionMessages.NameAlreadyExists);
+            ProgrammingLanguage? getByNameProgrammingLanguageResult = await _programmingLanguageRepository.GetAsync(pl => pl.Name == name);
+            if (getByNameProgrammingLanguageResult != null) throw new BusinessException(ProgrammingLanguageExceptionMessages.NameAlreadyExists);
         }
 
         public async Task NameCanNotBeDuplicatedWhenUpdated(int id, string name)
         {
-            ProgrammingLanguage? programmingLanguage = await _programmingLanguageRepository.GetAsync(pl => pl.Id != id && pl.Name == name);
-            if (programmingLanguage != null) throw new BusinessException(ProgrammingLanguageExceptionMessages.NameAlreadyExists);
+            ProgrammingLanguage? getByNameProgrammingLanguageResult = await _programmingLanguageRepository.GetAsync(pl => pl.Id != id && pl.Name == name);
+            if (getByNameProgrammingLanguageResult != null) throw new BusinessException(ProgrammingLanguageExceptionMessages.NameAlreadyExists);
         }
     }
 }

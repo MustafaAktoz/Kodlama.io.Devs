@@ -29,8 +29,8 @@ namespace Application.Services.UserAuthService
 
         public async Task<AccessToken> CreateAccessToken(User user)
         {
-            IPaginate<UserOperationClaim> userOperationClaims = await _userOperationClaimRepository.GetListAsync(u => u.UserId == user.Id, include: u => u.Include(u => u.OperationClaim));
-            IList<OperationClaim> operationClaims = userOperationClaims.Items.Select(u => new OperationClaim { Id = u.OperationClaim.Id, Name = u.OperationClaim.Name }).ToList();
+            IPaginate<UserOperationClaim> getListByUserIdUserOperationClaimResult = await _userOperationClaimRepository.GetListAsync(u => u.UserId == user.Id, include: u => u.Include(u => u.OperationClaim));
+            IList<OperationClaim> operationClaims = getListByUserIdUserOperationClaimResult.Items.Select(u => new OperationClaim { Id = u.OperationClaim.Id, Name = u.OperationClaim.Name }).ToList();
 
             AccessToken accessToken = _tokenHelper.CreateToken(user, operationClaims);
             return accessToken;
@@ -38,15 +38,15 @@ namespace Application.Services.UserAuthService
 
         public async Task<RefreshToken> CreateRefreshToken(User user)
         {
-            var ipAddress = _httpContextService.GetIpAddress();
-            RefreshToken refreshToken = _tokenHelper.CreateRefreshToken(user, ipAddress);
-            return await Task.FromResult(refreshToken);
+            var getIpAddressResult = _httpContextService.GetIpAddress();
+            RefreshToken createRefreshTokenResult = _tokenHelper.CreateRefreshToken(user, getIpAddressResult);
+            return await Task.FromResult(createRefreshTokenResult);
         }
 
         public async Task<RefreshToken> AddRefreshToken(RefreshToken refreshToken)
         {
-            RefreshToken addedRefreshToken = await _refreshTokenRepository.AddAsync(refreshToken);
-            return addedRefreshToken;
+            RefreshToken addRefreshTokenResult = await _refreshTokenRepository.AddAsync(refreshToken);
+            return addRefreshTokenResult;
         }
     }
 }

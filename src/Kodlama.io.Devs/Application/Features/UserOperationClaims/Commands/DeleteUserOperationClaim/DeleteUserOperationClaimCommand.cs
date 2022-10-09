@@ -33,9 +33,9 @@ namespace Application.Features.UserOperationClaims.Commands.DeleteUserOperationC
 
             public async Task<DeleteUserOperationClaimResultDto> Handle(DeleteUserOperationClaimCommand request, CancellationToken cancellationToken)
             {
-                UserOperationClaim? userOperationClaim = await _userOperationClaimRepository.GetAsync(uoc => uoc.Id == request.Id, include: i => i.Include(uoc => uoc.User).Include(uoc => uoc.OperationClaim));
-                UserOperationClaim deletedUserOperationClaim = await _userOperationClaimRepository.DeleteAsync(userOperationClaim);
-                DeleteUserOperationClaimResultDto deleteUserOperationClaimResultDto = _mapper.Map<DeleteUserOperationClaimResultDto>(deletedUserOperationClaim);
+                UserOperationClaim? getByIdUserOperationClaimResult = await _userOperationClaimRepository.GetAsync(uoc => uoc.Id == request.Id, include: i => i.Include(uoc => uoc.User).Include(uoc => uoc.OperationClaim));
+                UserOperationClaim deleteUserOperationClaimResult = await _userOperationClaimRepository.DeleteAsync(getByIdUserOperationClaimResult);
+                DeleteUserOperationClaimResultDto deleteUserOperationClaimResultDto = _mapper.Map<DeleteUserOperationClaimResultDto>(deleteUserOperationClaimResult);
 
                 return deleteUserOperationClaimResultDto;
             }

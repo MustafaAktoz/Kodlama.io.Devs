@@ -37,8 +37,8 @@ namespace Application.Features.UserOperationClaims.Queries.GetAllByUserIdUserOpe
 
             public async Task<GetAllByUserIdUserOperationClaimResultModel> Handle(GetAllByUserIdUserOperationClaimQuery request, CancellationToken cancellationToken)
             {
-                IPaginate<UserOperationClaim> userOperationClaims = await _userOperationClaimRepository.GetListAsync(uoc => uoc.UserId == request.UserId, include:i=>i.Include(uoc=>uoc.User).Include(uoc=>uoc.OperationClaim));
-                GetAllByUserIdUserOperationClaimResultModel getAllByUserIdUserOperationClaimResultModel = _mapper.Map<GetAllByUserIdUserOperationClaimResultModel>(userOperationClaims);
+                IPaginate<UserOperationClaim> getListByUserIdUserOperationClaimResult = await _userOperationClaimRepository.GetListAsync(uoc => uoc.UserId == request.UserId, include:i=>i.Include(uoc=>uoc.User).Include(uoc=>uoc.OperationClaim));
+                GetAllByUserIdUserOperationClaimResultModel getAllByUserIdUserOperationClaimResultModel = _mapper.Map<GetAllByUserIdUserOperationClaimResultModel>(getListByUserIdUserOperationClaimResult);
 
                 return getAllByUserIdUserOperationClaimResultModel;
             }

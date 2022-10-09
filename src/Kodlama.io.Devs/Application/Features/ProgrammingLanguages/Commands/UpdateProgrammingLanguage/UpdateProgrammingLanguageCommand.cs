@@ -40,8 +40,8 @@ namespace Application.Features.ProgrammingLanguages.Commands.UpdateProgrammingLa
                 await _programmingLanguageBusinessRules.NameCanNotBeDuplicatedWhenUpdated(request.Id, request.Name);
 
                 ProgrammingLanguage programmingLanguage = _mapper.Map<ProgrammingLanguage>(request);
-                ProgrammingLanguage updatedProgrammingLanguage = await _programmingLanguageRepository.UpdateAsync(programmingLanguage);
-                UpdateProgrammingLanguageResultDto updateProgrammingLanguageResultDto = _mapper.Map<UpdateProgrammingLanguageResultDto>(updatedProgrammingLanguage);
+                ProgrammingLanguage updateProgrammingLanguageResult = await _programmingLanguageRepository.UpdateAsync(programmingLanguage);
+                UpdateProgrammingLanguageResultDto updateProgrammingLanguageResultDto = _mapper.Map<UpdateProgrammingLanguageResultDto>(updateProgrammingLanguageResult);
 
                 return updateProgrammingLanguageResultDto;
             }

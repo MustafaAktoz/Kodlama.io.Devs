@@ -40,9 +40,9 @@ namespace Application.Features.UserOperationClaims.Commands.CreateUserOperationC
                 await _userOperationClaimBusinessRules.ThisOperationClaimCannotBeDuplicatedForThisUserWhenCreated(request.UserId, request.OperationClaimId);
 
                 UserOperationClaim userOperationClaim = _mapper.Map<UserOperationClaim>(request);
-                UserOperationClaim addedUserOperationClaim = await _userOperationClaimRepository.AddAsync(userOperationClaim);
-                UserOperationClaim? getUserOperationClaimResult = await _userOperationClaimRepository.GetAsync(uoc => uoc.Id == addedUserOperationClaim.Id, include: i => i.Include(uoc => uoc.User).Include(uoc => uoc.OperationClaim));
-                CreateUserOperationClaimResultDto createUserOperationClaimResultDto = _mapper.Map<CreateUserOperationClaimResultDto>(getUserOperationClaimResult);
+                UserOperationClaim addUserOperationClaimResult = await _userOperationClaimRepository.AddAsync(userOperationClaim);
+                UserOperationClaim? getByIdUserOperationClaimResult = await _userOperationClaimRepository.GetAsync(uoc => uoc.Id == addUserOperationClaimResult.Id, include: i => i.Include(uoc => uoc.User).Include(uoc => uoc.OperationClaim));
+                CreateUserOperationClaimResultDto createUserOperationClaimResultDto = _mapper.Map<CreateUserOperationClaimResultDto>(getByIdUserOperationClaimResult);
 
                 return createUserOperationClaimResultDto;
             }

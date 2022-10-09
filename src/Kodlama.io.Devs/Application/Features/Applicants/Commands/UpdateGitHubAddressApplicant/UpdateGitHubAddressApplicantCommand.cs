@@ -29,10 +29,10 @@ namespace Application.Features.Applicants.Commands.UpdateGitHubAddressApplicant
 
             public async Task<UpdateGitHubAddressApplicantResultDto> Handle(UpdateGitHubAddressApplicantCommand request, CancellationToken cancellationToken)
             {
-                Applicant? applicant = await _applicantRepository.GetAsync(a => a.Id == request.Id);
-                applicant.GitHubAddress = request.GitHubAddress;
-                Applicant updatedApplicant = await _applicantRepository.UpdateAsync(applicant);
-                UpdateGitHubAddressApplicantResultDto updateGitHubAddressApplicantResultDto = _mapper.Map<UpdateGitHubAddressApplicantResultDto>(updatedApplicant);
+                Applicant? getByIdApplicantResult = await _applicantRepository.GetAsync(a => a.Id == request.Id);
+                getByIdApplicantResult.GitHubAddress = request.GitHubAddress;
+                Applicant updateApplicantResult = await _applicantRepository.UpdateAsync(getByIdApplicantResult);
+                UpdateGitHubAddressApplicantResultDto updateGitHubAddressApplicantResultDto = _mapper.Map<UpdateGitHubAddressApplicantResultDto>(updateApplicantResult);
 
                 return updateGitHubAddressApplicantResultDto;
             }

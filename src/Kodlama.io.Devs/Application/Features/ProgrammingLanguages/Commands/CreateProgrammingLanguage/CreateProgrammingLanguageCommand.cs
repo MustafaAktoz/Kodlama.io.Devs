@@ -38,8 +38,8 @@ namespace Application.Features.ProgrammingLanguages.Commands.CreateProgrammingLa
                 await _programmingLanguageBusinessRules.NameCanNotBeDuplicatedWhenCreated(request.Name);
 
                 ProgrammingLanguage programmingLanguage = _mapper.Map<ProgrammingLanguage>(request);
-                ProgrammingLanguage addedProgrammingLanguage = await _programmingLanguageRepository.AddAsync(programmingLanguage);
-                CreateProgrammingLanguageResultDto createProgrammingLanguageResultDto = _mapper.Map<CreateProgrammingLanguageResultDto>(addedProgrammingLanguage);
+                ProgrammingLanguage addProgrammingLanguageResult = await _programmingLanguageRepository.AddAsync(programmingLanguage);
+                CreateProgrammingLanguageResultDto createProgrammingLanguageResultDto = _mapper.Map<CreateProgrammingLanguageResultDto>(addProgrammingLanguageResult);
 
                 return createProgrammingLanguageResultDto;
             }

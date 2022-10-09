@@ -33,9 +33,9 @@ namespace Application.Features.Technologies.Commands.DeleteTechnology
 
             public async Task<DeleteTechnologyResultDto> Handle(DeleteTechnologyCommand request, CancellationToken cancellationToken)
             {
-                Technology? technology = await _technologyRepository.GetAsync(t=>t.Id == request.Id, include:i=>i.Include(t=>t.ProgrammingLanguage));
-                Technology deletedTechnology = await _technologyRepository.DeleteAsync(technology);
-                DeleteTechnologyResultDto deleteTechnologyResultDto = _mapper.Map<DeleteTechnologyResultDto>(deletedTechnology);
+                Technology? getByIdTechnologyResult = await _technologyRepository.GetAsync(t=>t.Id == request.Id, include:i=>i.Include(t=>t.ProgrammingLanguage));
+                Technology deleteTechnologyResult = await _technologyRepository.DeleteAsync(getByIdTechnologyResult);
+                DeleteTechnologyResultDto deleteTechnologyResultDto = _mapper.Map<DeleteTechnologyResultDto>(deleteTechnologyResult);
 
                 return deleteTechnologyResultDto;
             }
