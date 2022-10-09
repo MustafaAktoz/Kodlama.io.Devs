@@ -1,5 +1,6 @@
 ﻿using Application.Features.OperationClaims.Rules;
 using Application.Features.ProgrammingLanguages.Rules;
+using Application.Features.Technologies.Rules;
 using Application.Features.UserAuths.Rules;
 using Application.Features.UserOperationClaims.Rules;
 using Application.Services.HttpRequestService;
@@ -32,6 +33,7 @@ namespace Application
             services.AddScoped<IHttpContextService, HttpContextManager>();
 
             services.AddScoped<ProgrammingLanguageBusinessRules>();
+            services.AddScoped<TechnologyBusinessRules>();
             services.AddScoped<OperationClaimBusinessRules>();
             services.AddScoped<UserOperationClaimBusinessRules>();
 

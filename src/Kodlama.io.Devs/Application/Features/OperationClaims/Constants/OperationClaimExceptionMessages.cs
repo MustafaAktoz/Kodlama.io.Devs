@@ -8,6 +8,6 @@ namespace Application.Features.OperationClaims.Constants
 {
     public class OperationClaimExceptionMessages
     {
-        public static string NameAlreadyExists = "Operation claim name already exists";
+        public const string NameAlreadyExists = "Operation claim name already exists";
     }
 }

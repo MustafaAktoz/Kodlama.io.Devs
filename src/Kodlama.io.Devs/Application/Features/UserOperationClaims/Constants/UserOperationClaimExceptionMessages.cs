@@ -8,6 +8,6 @@ namespace Application.Features.UserOperationClaims.Constants
 {
     public class UserOperationClaimExceptionMessages
     {
-        public static string UserAlreadyHasThisOperationClaim = "User already has this operation claim";
+        public const string UserAlreadyHasThisOperationClaim = "User already has this operation claim";
     }
 }
