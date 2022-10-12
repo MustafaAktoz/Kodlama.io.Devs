@@ -1,7 +1,9 @@
 ﻿using Application.Enums;
+using Core.Persistence.Repositories;
 using Core.Security.Entities;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +25,22 @@ namespace Persistence.Contexts
 
         public BaseDbContext(DbContextOptions dbContextOptions) : base(dbContextOptions) { }
 
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+        {
+            IEnumerable<EntityEntry<Entity>> datas = ChangeTracker.Entries<Entity>();
+
+            foreach (var data in datas)
+            {
+                _ = data.State switch
+                {
+                    EntityState.Added => data.Entity.CreatedDate = DateTime.UtcNow,
+                    EntityState.Modified => data.Entity.UpdatedDate = DateTime.UtcNow,
+                    _ => DateTime.UtcNow
+                };
+            }
+            return await base.SaveChangesAsync(cancellationToken);
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ProgrammingLanguage>(a =>
@@ -31,6 +49,8 @@ namespace Persistence.Contexts
                 a.Property(p => p.Id).HasColumnName("Id");
                 a.Property(p => p.Name).HasColumnName("Name");
                 a.HasIndex(p => p.Name).IsUnique();
+                a.Property(p => p.CreatedDate).HasColumnName("CreatedDate");
+                a.Property(p => p.UpdatedDate).HasColumnName("UpdatedDate");
                 a.HasMany(p => p.Technologies);
             });
 
@@ -41,6 +61,8 @@ namespace Persistence.Contexts
                 a.Property(p => p.ProgrammingLanguageId).HasColumnName("ProgrammingLanguageId");
                 a.Property(p => p.Name).HasColumnName("Name");
                 a.HasIndex(p => p.Name).IsUnique();
+                a.Property(p => p.CreatedDate).HasColumnName("CreatedDate");
+                a.Property(p => p.UpdatedDate).HasColumnName("UpdatedDate");
                 a.HasOne(p => p.ProgrammingLanguage);
             });
 
@@ -55,6 +77,8 @@ namespace Persistence.Contexts
                 a.Property(p => p.PasswordHash).HasColumnName("PasswordHash");
                 a.Property(p => p.PasswordSalt).HasColumnName("PasswordSalt");
                 a.Property(p => p.Status).HasColumnName("Status");
+                a.Property(p => p.CreatedDate).HasColumnName("CreatedDate");
+                a.Property(p => p.UpdatedDate).HasColumnName("UpdatedDate");
                 a.HasMany(p => p.UserOperationClaims);
                 a.HasMany(p => p.RefreshTokens);
             });
@@ -69,6 +93,8 @@ namespace Persistence.Contexts
             {
                 a.ToTable("OperationClaims").HasKey(k => k.Id);
                 a.Property(p => p.Name).HasColumnName("Name");
+                a.Property(p => p.CreatedDate).HasColumnName("CreatedDate");
+                a.Property(p => p.UpdatedDate).HasColumnName("UpdatedDate");
                 a.HasIndex(p => p.Name).IsUnique();
             });
 
@@ -78,6 +104,8 @@ namespace Persistence.Contexts
                 a.Property(p => p.UserId).HasColumnName("UserId");
                 a.Property(p => p.OperationClaimId).HasColumnName("OperationClaimId");
                 a.HasIndex(p => new { p.UserId, p.OperationClaimId }).IsUnique();
+                a.Property(p => p.CreatedDate).HasColumnName("CreatedDate");
+                a.Property(p => p.UpdatedDate).HasColumnName("UpdatedDate");
                 a.HasOne(p => p.User);
                 a.HasOne(p => p.OperationClaim);
             });
@@ -94,6 +122,8 @@ namespace Persistence.Contexts
                 a.Property(p => p.RevokedByIp).HasColumnName("RevokedByIp");
                 a.Property(p => p.ReplacedByToken).HasColumnName("ReplacedByToken");
                 a.Property(p => p.ReasonRevoked).HasColumnName("ReasonRevoked");
+                a.Property(p => p.CreatedDate).HasColumnName("CreatedDate");
+                a.Property(p => p.UpdatedDate).HasColumnName("UpdatedDate");
                 a.HasOne(p => p.User);
             });
 
