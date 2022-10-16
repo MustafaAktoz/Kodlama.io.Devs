@@ -10,8 +10,9 @@ namespace Application.Services.UserAuthService
 {
     public interface IUserAuthService
     {
-        public Task<AccessToken> CreateAccessToken(User user);
-        public Task<RefreshToken> CreateRefreshToken(User user);
-        public Task<RefreshToken> AddRefreshToken(RefreshToken refreshToken);
+        Task<AccessToken> CreateAccessToken(User user);
+        Task<RefreshToken> CreateRefreshToken(User user);
+        Task<RefreshToken> AddRefreshToken(RefreshToken refreshToken);
+        Task EmailCanNotBeDuplicatedWhenRegistered(string email);
     }
 }

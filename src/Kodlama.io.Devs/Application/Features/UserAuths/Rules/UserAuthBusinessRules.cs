@@ -32,11 +32,5 @@ namespace Application.Features.UserAuths.Rules
             if (!HashingHelper.VerifyPasswordHash(password, passwordHash, passwordSalt))
                 throw new BusinessException(UserAuthMessages.PasswordIsIncorrect);
         }
-
-        public async Task EmailCanNotBeDuplicatedWhenRegistered(string email)
-        {
-            User? getByEmailUserResult = await _userRepository.GetAsync(u => u.Email == email);
-            if (getByEmailUserResult != null) throw new BusinessException(UserAuthMessages.EmailIsAlreadyRegistered);
-        }
     }
 }

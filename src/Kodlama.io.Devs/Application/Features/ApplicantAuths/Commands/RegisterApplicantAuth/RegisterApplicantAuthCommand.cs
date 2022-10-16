@@ -29,19 +29,17 @@ namespace Application.Features.ApplicantAuths.Commands.RegisterApplicantAuth
             private readonly IUserAuthService _userAuthService;
             private readonly IApplicantRepository _applicantRepository;
             private readonly IMapper _mapper;
-            private readonly UserAuthBusinessRules _userAuthBusinessRules;
 
-            public RegisterApplicantAuthCommandHandler(IUserAuthService userAuthService, IApplicantRepository applicantRepository, IMapper mapper, UserAuthBusinessRules userAuthBusinessRules)
+            public RegisterApplicantAuthCommandHandler(IUserAuthService userAuthService, IApplicantRepository applicantRepository, IMapper mapper)
             {
                 _userAuthService = userAuthService;
                 _applicantRepository = applicantRepository;
                 _mapper = mapper;
-                _userAuthBusinessRules = userAuthBusinessRules;
             }
 
             public async Task<RegisterApplicantAuthResultDto> Handle(RegisterApplicantAuthCommand request, CancellationToken cancellationToken)
             {
-                await _userAuthBusinessRules.EmailCanNotBeDuplicatedWhenRegistered(request.Email);
+                await _userAuthService.EmailCanNotBeDuplicatedWhenRegistered(request.Email);
 
                 byte[] passwordHash, passwordSalt;
                 HashingHelper.CreatePasswordHash(request.Password, out passwordHash, out passwordSalt);

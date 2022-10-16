@@ -8,7 +8,6 @@ namespace Application.Features.UserAuths.Constants
 {
     public class UserAuthMessages
     {
-        public const string EmailIsAlreadyRegistered = "Email is already registered";
         public const string EmailNotFound = "Email not found";
         public const string PasswordIsIncorrect = "Password is incorrect";
     }

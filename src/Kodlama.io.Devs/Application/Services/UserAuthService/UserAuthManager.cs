@@ -1,5 +1,6 @@
 ﻿using Application.Services.HttpRequestService;
 using Application.Services.Repositories;
+using Core.CrossCuttingConcerns.Exceptions;
 using Core.Persistence.Paging;
 using Core.Security.Entities;
 using Core.Security.JWT;
@@ -14,13 +15,15 @@ namespace Application.Services.UserAuthService
 {
     public class UserAuthManager : IUserAuthService
     {
+        private readonly IUserRepository _userRepository;
         private readonly IUserOperationClaimRepository _userOperationClaimRepository;
         private readonly IRefreshTokenRepository _refreshTokenRepository;
         private readonly ITokenHelper _tokenHelper;
         private readonly IHttpContextService _httpContextService;
 
-        public UserAuthManager(IUserOperationClaimRepository userOperationClaimRepository, IRefreshTokenRepository refreshTokenRepository, ITokenHelper tokenHelper, IHttpContextService httpContextService)
+        public UserAuthManager(IUserRepository userRepository, IUserOperationClaimRepository userOperationClaimRepository, IRefreshTokenRepository refreshTokenRepository, ITokenHelper tokenHelper, IHttpContextService httpContextService)
         {
+            _userRepository = userRepository;
             _userOperationClaimRepository = userOperationClaimRepository;
             _refreshTokenRepository = refreshTokenRepository;
             _tokenHelper = tokenHelper;
@@ -47,6 +50,12 @@ namespace Application.Services.UserAuthService
         {
             RefreshToken addRefreshTokenResult = await _refreshTokenRepository.AddAsync(refreshToken);
             return addRefreshTokenResult;
+        }
+
+        public async Task EmailCanNotBeDuplicatedWhenRegistered(string email)
+        {
+            User? getByEmailUserResult = await _userRepository.GetAsync(u => u.Email == email);
+            if (getByEmailUserResult != null) throw new BusinessException(UserAuthMessages.EmailIsAlreadyRegistered);
         }
     }
 }
