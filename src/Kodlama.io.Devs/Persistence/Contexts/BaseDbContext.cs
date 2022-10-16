@@ -1,4 +1,4 @@
-﻿using Application.Enums;
+﻿using Domain.Enums;
 using Core.Persistence.Repositories;
 using Core.Security.Entities;
 using Domain.Entities;

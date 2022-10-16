@@ -1,4 +1,4 @@
-﻿using Application.Enums;
+﻿using Domain.Enums;
 using Application.Features.Technologies.Dtos;
 using Application.Services.Repositories;
 using AutoMapper;
