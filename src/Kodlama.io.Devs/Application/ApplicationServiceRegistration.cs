@@ -6,6 +6,7 @@ using Application.Features.UserOperationClaims.Rules;
 using Application.Services.HttpRequestService;
 using Application.Services.UserAuthService;
 using Core.Application.Pipelines.Authorization;
+using Core.Application.Pipelines.Transaction;
 using Core.Application.Pipelines.Validation;
 using Core.Security.JWT;
 using FluentValidation;
@@ -42,6 +43,7 @@ namespace Application
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(AuthorizationBehavior<,>));
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(TransactionScopeBehavior<,>));
         }
     }
 }
