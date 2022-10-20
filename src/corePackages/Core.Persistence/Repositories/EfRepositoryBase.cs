@@ -17,9 +17,10 @@ public class EfRepositoryBase<TEntity, TContext> : IAsyncRepository<TEntity>, IR
         Context = context;
     }
 
-    public async Task<TEntity?> GetAsync(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null)
+    public async Task<TEntity?> GetAsync(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null, bool enableTracking = false)
     {
         IQueryable<TEntity> queryable = Query();
+        if (!enableTracking) queryable = queryable.AsNoTracking();
         if(include != null) queryable = include(queryable);
         return await queryable.FirstOrDefaultAsync(predicate);
     }
@@ -29,7 +30,7 @@ public class EfRepositoryBase<TEntity, TContext> : IAsyncRepository<TEntity>, IR
                                                            null,
                                                        Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>?
                                                            include = null,
-                                                       int index = 0, int size = 10, bool enableTracking = true,
+                                                       int index = 0, int size = 10, bool enableTracking = false,
                                                        CancellationToken cancellationToken = default)
     {
         IQueryable<TEntity> queryable = Query();
@@ -46,7 +47,7 @@ public class EfRepositoryBase<TEntity, TContext> : IAsyncRepository<TEntity>, IR
                                                                         IIncludableQueryable<TEntity, object>>?
                                                                     include = null,
                                                                 int index = 0, int size = 10,
-                                                                bool enableTracking = true,
+                                                                bool enableTracking = false,
                                                                 CancellationToken cancellationToken = default)
     {
         IQueryable<TEntity> queryable = Query().AsQueryable().ToDynamic(dynamic);
@@ -81,16 +82,19 @@ public class EfRepositoryBase<TEntity, TContext> : IAsyncRepository<TEntity>, IR
         return entity;
     }
 
-    public TEntity? Get(Expression<Func<TEntity, bool>> predicate)
+    public TEntity? Get(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null, bool enableTracking = false)
     {
-        return Context.Set<TEntity>().FirstOrDefault(predicate);
+        IQueryable<TEntity> queryable = Query();
+        if (!enableTracking) queryable = queryable.AsNoTracking();
+        if (include != null) queryable = include(queryable);
+        return queryable.FirstOrDefault(predicate);
     }
 
     public IPaginate<TEntity> GetList(Expression<Func<TEntity, bool>>? predicate = null,
                                       Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
                                       Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
                                       int index = 0, int size = 10,
-                                      bool enableTracking = true)
+                                      bool enableTracking = false)
     {
         IQueryable<TEntity> queryable = Query();
         if (!enableTracking) queryable = queryable.AsNoTracking();
@@ -104,7 +108,7 @@ public class EfRepositoryBase<TEntity, TContext> : IAsyncRepository<TEntity>, IR
     public IPaginate<TEntity> GetListByDynamic(Dynamic.Dynamic dynamic,
                                                Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>?
                                                    include = null, int index = 0, int size = 10,
-                                               bool enableTracking = true)
+                                               bool enableTracking = false)
     {
         IQueryable<TEntity> queryable = Query().AsQueryable().ToDynamic(dynamic);
         if (!enableTracking) queryable = queryable.AsNoTracking();
